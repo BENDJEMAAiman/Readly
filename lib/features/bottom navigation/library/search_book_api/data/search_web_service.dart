@@ -14,7 +14,7 @@ class SearchWebService {
       'q': title,
       'fields':
           'key,title,author_name,cover_i,edition_key, number_of_pages_median',
-      'limit': 10,
+      'limit': 20,
     },
   );
   
