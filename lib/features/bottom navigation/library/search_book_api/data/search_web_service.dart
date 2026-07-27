@@ -6,6 +6,7 @@ class SearchWebService {
   SearchWebService(this.dio);
 
   Future<List<dynamic>> getSearchResults(String title) async {
+    print(title);
     try {
   final response = await dio.get(
     "/search.json",
@@ -19,7 +20,10 @@ class SearchWebService {
   
   return response.data["docs"];
 } on DioException catch (e) {
+      print(e.response?.statusCode);
+      print(e.response?.data);
       throw Exception("Failed to fetch search api: ${e.message}");
+
     }
   }
 }

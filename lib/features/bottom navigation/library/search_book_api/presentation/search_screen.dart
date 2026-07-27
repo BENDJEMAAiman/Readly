@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readly/core/dependency_injection.dart';
+import 'package:go_router/go_router.dart';
+import 'package:readly/core/routing/routes.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_state.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_cubit.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/search_details_screen.dart';
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -43,6 +43,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return "must enter a book title to search";
+                  }
+                  if (value.trim().length < 3) {
+                    return "Search must contain at least 3 characters.";
                   }
                   return null;
                 },
@@ -107,18 +110,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: Text(searchResult.title),
                             subtitle: Text("author: ${searchResult.author}"),
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => BlocProvider(
-                                    create: (_) => SearchDetailsCubit(
-                                      searchDetailsRepository,
-                                    ),
-                                    child: SearchDetailsScreen(
-                                      basicInfo: searchResult,
-                                    ),
-                                  ),
-                                ),
+                              context.push(
+                                Routes.searchDetails,
+                                extra: searchResult,
                               );
                             },
                           );

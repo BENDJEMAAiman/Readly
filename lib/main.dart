@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readly/core/dependency_injection.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/search_screen.dart';
+import 'package:readly/core/routing/app_router.dart';
 
 void main() {
-  runApp(MainApp());
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -13,14 +10,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       theme: ThemeData(
         fontFamily: "Baloo2",
       ),
-      home: BlocProvider(
-        create: (context) => SearchCubit(searchRepository),
-        child: SearchScreen(),
-      )
     );
   }
 }
