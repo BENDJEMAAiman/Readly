@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "38030892046",
+    "project_id": "readly-41",
+    "storage_bucket": "readly-41.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38030892046:android:de6bf94ffd05dd2b4d305f",
+        "android_client_info": {
+          "package_name": "com.example.readly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWIFEALLEJ0-w-4TFTrOgNKQkIKgxrOMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:readly/core/dependency_injection.dart';
+import 'package:readly/core/dependency_injection/repositories.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
