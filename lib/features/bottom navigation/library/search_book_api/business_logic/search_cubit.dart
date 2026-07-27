@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readly/features/search_book_api/business_logic/search_state.dart';
-import 'package:readly/features/search_book_api/data/search_repository.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_state.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_api/data/search_repository.dart';
+
 
 class SearchCubit extends Cubit<SearchState>{
   SearchCubit(this.searchRepository) : super(SearchInitial());

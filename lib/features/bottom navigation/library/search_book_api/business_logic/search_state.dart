@@ -1,4 +1,4 @@
-import 'package:readly/features/search_book_api/model/search_model.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 
 sealed class SearchState {
   const SearchState();

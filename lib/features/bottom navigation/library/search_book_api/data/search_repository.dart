@@ -1,5 +1,6 @@
-import 'package:readly/features/search_book_api/data/search_web_service.dart';
-import 'package:readly/features/search_book_api/model/search_model.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_api/data/search_web_service.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
+
 
 class SearchRepository {
   final SearchWebService searchWebService;

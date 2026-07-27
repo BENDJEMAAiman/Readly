@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:readly/features/search_book_api/model/search_model.dart';
-import 'package:readly/features/search_book_details_api/business%20logic/search_details_cubit.dart';
-import 'package:readly/features/search_book_details_api/business%20logic/search_details_state.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_cubit.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_state.dart';
 
 class SearchDetailsScreen extends StatefulWidget {
   final SearchModel basicInfo;

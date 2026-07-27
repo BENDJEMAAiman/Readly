@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readly/core/dependency_injection.dart';
-import 'package:readly/features/search_book_api/business_logic/search_cubit.dart';
-import 'package:readly/features/search_book_api/business_logic/search_state.dart';
-import 'package:readly/features/search_book_details_api/business%20logic/search_details_cubit.dart';
-import 'package:readly/features/search_book_details_api/presentation/search_details_screen.dart';
-
+import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_state.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_cubit.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/search_details_screen.dart';
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -80,12 +79,31 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemBuilder: ((context, index) {
                           final searchResult = searchResults[index];
                           return ListTile(
-                            leading: (searchResult.coverId != null)
-                                ? Image.network(
-                                    'https://covers.openlibrary.org/b/id/${searchResult.coverId}-M.jpg',
-                                    width: 60,
-                                  )
-                                : Icon(Icons.book),
+                            leading: Image.network(
+                              'https://covers.openlibrary.org/b/id/${searchResult.coverId}-M.jpg',
+                              width: 60,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+
+                                return const SizedBox(
+                                  width: 60,
+                                  height: 90,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return const SizedBox(
+                                  width: 60,
+                                  height: 90,
+                                  child: Icon(Icons.book),
+                                );
+                              },
+                            ),
                             title: Text(searchResult.title),
                             subtitle: Text("author: ${searchResult.author}"),
                             onTap: () {
