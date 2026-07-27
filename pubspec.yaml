@@ -7,8 +7,12 @@ environment:
   sdk: ^3.12.2
 
 dependencies:
+  convert: ^3.1.2
+  dio: ^5.11.0
+  equatable: ^2.1.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +21,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
+
+  fonts:
+    - family: Baloo2
+      fonts:
+        - asset: assets/fonts/Baloo2-Regular.ttf
+        - asset: assets/fonts/Baloo2-Medium.ttf
+        - asset: assets/fonts/Baloo2-SemiBold.ttf
+        - asset: assets/fonts/Baloo2-Bold.ttf
+        - asset: assets/fonts/Baloo2-ExtraBold.ttf
