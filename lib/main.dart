@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/routing/app_router.dart';
 import 'package:readly/firebase_options.dart';
 
@@ -10,7 +11,7 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    print("Firebase initialized!");
+    debugPrint("Firebase initialized!");
   } on FirebaseException catch (e) {
     debugPrint('Firebase initialization failed: ${e.message}');
     rethrow;
@@ -27,9 +28,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: appRouter,
-      theme: ThemeData(fontFamily: "Baloo2"),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) {
+        return MaterialApp.router(
+          routerConfig: appRouter,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: "Baloo2",
+          ),
+        );
+      },
     );
   }
 }

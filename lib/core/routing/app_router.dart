@@ -2,6 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readly/core/dependency_injection/repositories.dart';
 import 'package:readly/core/routing/routes.dart';
+import 'package:readly/features/auth/business_logic/auth_cubit.dart';
+import 'package:readly/features/auth/presentation/pages/login_page.dart';
+import 'package:readly/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:readly/features/auth/presentation/pages/forgot_password.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/search_screen.dart';
@@ -28,6 +32,36 @@ final GoRouter appRouter = GoRouter(
         return BlocProvider(
           create: (_) => SearchDetailsCubit(searchDetailsRepository),
           child: SearchDetailsScreen(basicInfo: basicInfo),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: Routes.login,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => AuthCubit(authRepository),
+          child: const LoginPage(),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: Routes.signup,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => AuthCubit(authRepository),
+          child: const SignupPage(),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: Routes.verifyEmail,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => AuthCubit(authRepository),
+          child: const ForgotPassword(),
         );
       },
     ),

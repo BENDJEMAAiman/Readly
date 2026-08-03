@@ -49,7 +49,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                       child: Image.network(
                         'https://covers.openlibrary.org/b/id/${widget.basicInfo.coverId}-L.jpg',
                         height: 220,
-                        errorBuilder: (_, __, ___) {
+                        errorBuilder: (_, _, _) {
                           return const Icon(Icons.book, size: 120);
                         },
                         loadingBuilder: (context, child, progress) {
