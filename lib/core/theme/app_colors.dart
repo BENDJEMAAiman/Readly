@@ -28,4 +28,6 @@ class AppColors {
   //background 
   static const Color background = Color(0xFFF8F5EF);
 
+  static const Color indicatorInactive = Color(0xFFD9D9D9);
+
 }

@@ -7,6 +7,9 @@ import 'package:readly/features/bottom%20navigation/library/search_book_api/data
 import 'package:readly/features/bottom%20navigation/library/search_book_api/data/search_web_service.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/data/search_details_repository.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/data/search_details_web_service.dart';
+import 'package:readly/features/onboarding/data/onboarding_repository.dart';
+import 'package:readly/features/splash/data/splash_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //library api search
 final searchWebService = SearchWebService(DioClient.dio);
@@ -21,3 +24,19 @@ final googleSignIn = GoogleSignIn();
 
 final authWebService = AuthWebService(firebaseAuth, googleSignIn);
 final authRepository = AuthRepository(authWebService);
+
+// Shared Preferences
+late SharedPreferences sharedPreferences;
+
+// Splash
+late SplashRepository splashRepository;
+
+//onboarding
+late OnboardingRepository onboardingRepository;
+
+Future<void> initializeDependencies() async {
+  sharedPreferences = await SharedPreferences.getInstance();
+
+  splashRepository = SplashRepository(sharedPreferences);
+  onboardingRepository = OnboardingRepository(sharedPreferences);
+}

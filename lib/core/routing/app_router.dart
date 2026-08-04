@@ -14,6 +14,10 @@ import 'package:readly/features/bottom%20navigation/library/search_book_api/mode
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/search_screen.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/search_details_screen.dart';
+import 'package:readly/features/onboarding/business_logic/onboarding_cubit.dart';
+import 'package:readly/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:readly/features/splash/business_logic/splash_cubit.dart';
+import 'package:readly/features/splash/presentation/splash_page.dart';
 
 final GoRouter appRouter = GoRouter(
   routes: [
@@ -103,5 +107,24 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
+    GoRoute(
+      path: Routes.splash,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => SplashCubit(splashRepository),
+          child: const SplashPage(),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: Routes.onboarding,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => OnboardingCubit(onboardingRepository),
+          child: const OnboardingPage(),
+        );
+      },
+    ),
   ],
 );

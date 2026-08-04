@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:readly/core/dependency_injection/repositories.dart';
 import 'package:readly/core/routing/app_router.dart';
 import 'package:readly/firebase_options.dart';
 
@@ -12,6 +13,7 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     debugPrint("Firebase initialized!");
+    await initializeDependencies();
   } on FirebaseException catch (e) {
     debugPrint('Firebase initialization failed: ${e.message}');
     rethrow;
