@@ -1,8 +1,8 @@
 class AppAssets {
   AppAssets._();
 
-  static const googleIcon = 'assets/icons/google.svg';
-  static const congratulation = 'assets/images/auth/signUp_success_img.png';
+  static const googleIcon = 'assets/google.png';
+  static const congratulation = 'assets/congratulations.png';
 
   
  
