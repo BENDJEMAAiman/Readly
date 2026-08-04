@@ -111,6 +111,12 @@ class AuthRepository {
 
   Future<void> sendEmailVerification() async {
     try {
+      final currentUser = authWebService.getCurrentUser();
+
+      if (currentUser == null) {
+        throw Exception('No authenticated user found.');
+      }
+
       await authWebService.sendEmailVerif();
     } on FirebaseAuthException {
       throw Exception('Failed to send verification email.');
@@ -122,6 +128,32 @@ class AuthRepository {
       await authWebService.signOut();
     } on FirebaseAuthException {
       throw Exception('Failed to sign out.');
+    }
+  }
+
+  Future<UserEntity> signInWithGoogle() async {
+    try {
+      final credential = await authWebService.signInWithGoogle();
+      final currentUser = credential.user;
+
+      if (currentUser == null) {
+        throw Exception("Failed to retrieve the authenticated user.");
+      }
+
+      return _mapUser(currentUser);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'account-exists-with-different-credential':
+          throw Exception(
+            'An account already exists with a different sign-in method.',
+          );
+
+        case 'invalid-credential':
+          throw Exception('The Google credentials are invalid.');
+
+        default:
+          throw Exception('Google sign in failed. Please try again.');
+      }
     }
   }
 }

@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthWebService {
   final FirebaseAuth firebaseAuth;
-  AuthWebService(this.firebaseAuth);
+  final GoogleSignIn googleSignIn;
+  AuthWebService(this.firebaseAuth, this.googleSignIn);
 
   //sign up
   Future<UserCredential> signUpWithEmail({
@@ -66,6 +68,28 @@ class AuthWebService {
   Future<void> signOut() async {
     try {
       await firebaseAuth.signOut();
+      await googleSignIn.signOut();
+    } on FirebaseAuthException {
+      rethrow;
+    }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        throw Exception('Google sign in cancelled.');
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      return await firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthException {
       rethrow;
     }

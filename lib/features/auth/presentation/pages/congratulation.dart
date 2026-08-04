@@ -38,9 +38,9 @@ class _CongratulationState extends State<Congratulation> {
 
             /// Login button
             PrimaryButton(
-              title: 'Reset Password',
+              title: 'Get Started',
               onPressed: () {
-                context.push(Routes.signup);
+                context.pushReplacement(Routes.signup);
               },
             ),
 

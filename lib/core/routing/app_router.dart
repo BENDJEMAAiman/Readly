@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:readly/core/dependency_injection/repositories.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/features/auth/business_logic/auth_cubit.dart';
+import 'package:readly/features/auth/presentation/pages/check_email_password.dart';
+import 'package:readly/features/auth/presentation/pages/check_email_verification.dart';
 import 'package:readly/features/auth/presentation/pages/login_page.dart';
 import 'package:readly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:readly/features/auth/presentation/pages/forgot_password.dart';
@@ -62,6 +64,30 @@ final GoRouter appRouter = GoRouter(
         return BlocProvider(
           create: (_) => AuthCubit(authRepository),
           child: const ForgotPassword(),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: Routes.checkEmailPassword,
+      builder: (context, state) {
+        final email = state.extra as String;
+
+        return BlocProvider(
+          create: (_) => AuthCubit(authRepository),
+          child: CheckEmailPassword(email: email),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: Routes.checkEmailVerification,
+      builder: (context, state) {
+        final email = state.extra as String;
+
+        return BlocProvider(
+          create: (_) => AuthCubit(authRepository),
+          child: CheckEmailVerification(email: email),
         );
       },
     ),

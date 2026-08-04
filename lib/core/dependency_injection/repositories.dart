@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readly/core/network/dio_client.dart';
 import 'package:readly/features/auth/data/auth_repository.dart';
 import 'package:readly/features/auth/data/auth_web_service.dart';
@@ -16,5 +17,7 @@ final searchDetailsRepository = SearchDetailsRepository(searchDetailsWebService)
 
 //auth
 final firebaseAuth = FirebaseAuth.instance;
-final authWebService = AuthWebService(firebaseAuth);
+final googleSignIn = GoogleSignIn();
+
+final authWebService = AuthWebService(firebaseAuth, googleSignIn);
 final authRepository = AuthRepository(authWebService);

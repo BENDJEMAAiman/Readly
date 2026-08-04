@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
 
               GoogleSignInButton(
                 onPressed: () {
-                  //context.read<AuthCubit>().signInWithGoogle();
+                  context.read<AuthCubit>().signInWithGoogle();
                 },
               ),
             ],

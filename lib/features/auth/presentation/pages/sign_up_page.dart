@@ -97,7 +97,6 @@ class _SignupPageState extends State<SignupPage> {
                 if (!_formKey.currentState!.validate()) {
                   return;
                 }
-
                 context.read<AuthCubit>().signUpWithEmail(
                   email: _emailController.text.trim(),
                   password: _passwordController.text,
@@ -122,7 +121,7 @@ class _SignupPageState extends State<SignupPage> {
           Center(
             child: Text.rich(
               TextSpan(
-                text: 'By clicking Register, you agree to our\n',
+                text: 'By clicking Sign Up, you agree to our\n',
                 style: Theme.of(context).textTheme.bodySmall,
                 children: [
                   TextSpan(

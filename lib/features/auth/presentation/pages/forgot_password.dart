@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:readly/core/routing/routes.dart';
 import 'package:readly/core/validators/auth_validators.dart';
 import 'package:readly/features/auth/business_logic/auth_cubit.dart';
 import 'package:readly/features/auth/presentation/widgets%20/auth_header.dart';
@@ -64,7 +66,13 @@ class _VerifyEmailState extends State<ForgotPassword> {
                   return;
                 }
 
-                context.read<AuthCubit>().resetPassword(_emailController.text.trim());
+                context.read<AuthCubit>().resetPassword(
+                  _emailController.text.trim(),
+                );
+                context.go(
+                  Routes.checkEmailPassword,
+                  extra: _emailController.text.trim(),
+                );
               },
             ),
           ],
