@@ -31,7 +31,7 @@ class _CongratulationState extends State<Congratulation> {
 
           const AuthHeader(
               title: 'Congratulation!',
-              subtitle: 'Your account is complete',
+              subtitle: "You're all set! \nLet's start your reading journey.",
             ),
 
             SizedBox(height: 24.h),
@@ -40,7 +40,7 @@ class _CongratulationState extends State<Congratulation> {
             PrimaryButton(
               title: 'Get Started',
               onPressed: () {
-                context.pushReplacement(Routes.signup);
+                context.go(Routes.search);
               },
             ),
 

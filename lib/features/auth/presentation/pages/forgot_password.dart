@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/core/validators/auth_validators.dart';
 import 'package:readly/features/auth/business_logic/auth_cubit.dart';
+import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/auth/presentation/widgets%20/auth_header.dart';
 import 'package:readly/features/auth/presentation/widgets%20/auth_scaffold.dart';
 import 'package:readly/features/auth/presentation/widgets%20/auth_text_field.dart';
@@ -32,50 +33,63 @@ class _VerifyEmailState extends State<ForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthScaffold(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Header
-            const AuthHeader(
-              title: 'Forgot Password',
-              subtitle: 'Please enter the email to reset your password',
-            ),
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is PasswordResetEmailSent) {
+          context.go(
+            Routes.checkEmailPassword,
+            extra: _emailController.text.trim(),
+          );
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
+      child: AuthScaffold(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// Header
+              const AuthHeader(
+                title: 'Forgot Password',
+                subtitle: 'Please enter the email to reset your password',
+              ),
 
-            SizedBox(height: 40.h),
+              SizedBox(height: 40.h),
 
-            /// Email
-            AuthTextField(
-              label: 'Email',
-              hintText: 'Your email',
-              controller: _emailController,
-              validator: AuthValidators.email,
-              focusNode: _emailFocus,
-              textInputAction: TextInputAction.next,
-            ),
+              /// Email
+              AuthTextField(
+                label: 'Email',
+                hintText: 'Your email',
+                controller: _emailController,
+                validator: AuthValidators.email,
+                focusNode: _emailFocus,
+                textInputAction: TextInputAction.next,
+              ),
 
-            SizedBox(height: 24.h),
+              SizedBox(height: 24.h),
 
-            /// Login button
-            PrimaryButton(
-              title: 'Reset Password',
-              onPressed: () {
-                if (!_formKey.currentState!.validate()) {
-                  return;
-                }
+              /// Login button
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, state) {
+                  return PrimaryButton(
+                    title: 'Reset Password',
+                    isLoading: state is ResetPassLoading,
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) return;
 
-                context.read<AuthCubit>().resetPassword(
-                  _emailController.text.trim(),
-                );
-                context.go(
-                  Routes.checkEmailPassword,
-                  extra: _emailController.text.trim(),
-                );
-              },
-            ),
-          ],
+                      context.read<AuthCubit>().resetPassword(
+                        _emailController.text.trim(),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/auth/data/auth_repository.dart';
@@ -10,7 +11,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
-    emit(const AuthLoading());
+    emit(const SignUpLoading());
 
     try {
       final user = await authRepository.signUpWithEmail(
@@ -23,16 +24,18 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         emit(EmailVerificationRequired(user));
       }
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
+    } catch (e, stackTrace) {
+  debugPrint('ERROR: $e');
+  debugPrintStack(stackTrace: stackTrace);
+  emit(AuthError(e.toString()));
+}
   }
 
   Future<void> signInWithEmail({
     required String email,
     required String password,
   }) async {
-    emit(const AuthLoading());
+    emit(const LoginLoading());
 
     try {
       final user = await authRepository.signInWithEmail(
@@ -72,7 +75,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> resetPassword(String email) async {
-    emit(const AuthLoading());
+    emit(const ResetPassLoading());
 
     try {
       await authRepository.resetPassword(email);
@@ -108,7 +111,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signInWithGoogle() async {
-    emit(const AuthLoading());
+    emit(const GoogleLogLoading());
 
     try {
       final user = await authRepository.signInWithGoogle();

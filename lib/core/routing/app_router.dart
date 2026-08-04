@@ -5,6 +5,7 @@ import 'package:readly/core/routing/routes.dart';
 import 'package:readly/features/auth/business_logic/auth_cubit.dart';
 import 'package:readly/features/auth/presentation/pages/check_email_password.dart';
 import 'package:readly/features/auth/presentation/pages/check_email_verification.dart';
+import 'package:readly/features/auth/presentation/pages/congratulation.dart';
 import 'package:readly/features/auth/presentation/pages/login_page.dart';
 import 'package:readly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:readly/features/auth/presentation/pages/forgot_password.dart';
@@ -59,7 +60,7 @@ final GoRouter appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: Routes.verifyEmail,
+      path: Routes.forgotPassword,
       builder: (context, state) {
         return BlocProvider(
           create: (_) => AuthCubit(authRepository),
@@ -91,5 +92,16 @@ final GoRouter appRouter = GoRouter(
         );
       },
     ),
+
+    GoRoute(
+      path: Routes.congratulation,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => AuthCubit(authRepository),
+          child: const Congratulation(),
+        );
+      },
+    ),
+
   ],
 );

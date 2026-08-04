@@ -39,19 +39,24 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  void _login() {
+    if (!_formKey.currentState!.validate()) return;
+
+    context.read<AuthCubit>().signInWithEmail(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          context.go(Routes.search); // Later replace with Routes.home
-        }
-
-        if (state is EmailVerificationRequired) {
-          context.go(Routes.verifyEmail);
-        }
-
-        if (state is AuthError) {
+          context.go(Routes.search);
+        } else if (state is EmailVerificationRequired) {
+          context.go(Routes.checkEmailVerification, extra: state.user.email);
+        } else if (state is AuthError) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
@@ -95,14 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
                 focusNode: _passwordFocus,
                 textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) {
-                  if (_formKey.currentState!.validate()) {
-                    context.read<AuthCubit>().signInWithEmail(
-                      email: _emailController.text.trim(),
-                      password: _passwordController.text,
-                    );
-                  }
-                },
+                onFieldSubmitted: (_) => _login(),
               ),
 
               SizedBox(height: 12.h),
@@ -110,7 +108,9 @@ class _LoginPageState extends State<LoginPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    context.push(Routes.forgotPassword);
+                  },
                   child: Text(
                     'Forgot Password?',
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -121,16 +121,14 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 24.h),
 
               /// Login button
-              PrimaryButton(
-                title: 'Login',
-                onPressed: () {
-                  if (!_formKey.currentState!.validate()) {
-                    return;
-                  }
-
-                  context.read<AuthCubit>().signInWithEmail(
-                    email: _emailController.text.trim(),
-                    password: _passwordController.text,
+              BlocBuilder<AuthCubit, AuthState>(
+                buildWhen: (previous, current) =>
+                    previous is LoginLoading || current is LoginLoading,
+                builder: (context, state) {
+                  return PrimaryButton(
+                    title: 'Login',
+                    isLoading: state is LoginLoading,
+                    onPressed: _login,
                   );
                 },
               ),
@@ -153,9 +151,16 @@ class _LoginPageState extends State<LoginPage> {
 
               SizedBox(height: 24.h),
 
-              GoogleSignInButton(
-                onPressed: () {
-                  context.read<AuthCubit>().signInWithGoogle();
+              BlocBuilder<AuthCubit, AuthState>(
+                buildWhen: (previous, current) =>
+                    previous is GoogleLogLoading || current is GoogleLogLoading,
+                builder: (context, state) {
+                  return GoogleSignInButton(
+                    isLoading: state is GoogleLogLoading,
+                    onPressed: () {
+                      context.read<AuthCubit>().signInWithGoogle();
+                    },
+                  );
                 },
               ),
             ],
