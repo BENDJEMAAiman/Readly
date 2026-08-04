@@ -32,6 +32,7 @@ class _CheckEmailVerificationState extends State<CheckEmailVerification> {
         }
       },
       child: AuthScaffold(
+        showBackButton: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

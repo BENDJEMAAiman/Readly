@@ -47,6 +47,7 @@ class _VerifyEmailState extends State<ForgotPassword> {
         }
       },
       child: AuthScaffold(
+        showBackButton: false,
         child: Form(
           key: _formKey,
           child: Column(

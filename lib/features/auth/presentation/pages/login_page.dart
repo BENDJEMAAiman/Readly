@@ -63,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: AuthScaffold(
+        showBackButton: false,
         child: Form(
           key: _formKey,
           child: Column(

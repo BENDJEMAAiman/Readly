@@ -18,6 +18,7 @@ class _CongratulationState extends State<Congratulation> {
   @override
   Widget build(BuildContext context) {
     return AuthScaffold(
+      showBackButton: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

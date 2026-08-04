@@ -53,6 +53,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return AuthScaffold(
+      showBackButton: false,
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
@@ -149,7 +150,7 @@ class _SignupPageState extends State<SignupPage> {
                 },
               ),
 
-              SizedBox(height: 100.h),
+              SizedBox(height: 80.h),
 
               /// Terms & Policy
               Center(

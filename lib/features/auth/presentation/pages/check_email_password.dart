@@ -36,6 +36,7 @@ class _CheckEmailPasswordState extends State<CheckEmailPassword> {
         }
       },
       child: AuthScaffold(
+        showBackButton: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
