@@ -33,7 +33,7 @@ class OnboardingActions extends StatelessWidget {
           child: OutlinedButton(
             onPressed: onSignIn,
             style: OutlinedButton.styleFrom(
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.background,
               side: BorderSide.none,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.r),

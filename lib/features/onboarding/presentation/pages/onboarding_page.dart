@@ -6,7 +6,6 @@ import 'package:readly/core/dependency_injection/repositories.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/features/onboarding/business_logic/onboarding_cubit.dart';
 import 'package:readly/features/onboarding/business_logic/onboarding_state.dart';
-import 'package:readly/features/onboarding/data/onboarding_repository.dart';
 import 'package:readly/features/onboarding/presentation/widgets/onboarding_actions.dart';
 import 'package:readly/features/onboarding/presentation/widgets/onboarding_app_bar.dart';
 import 'package:readly/features/onboarding/presentation/widgets/onboarding_item.dart';

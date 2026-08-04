@@ -9,6 +9,8 @@ class SplashCubit extends Cubit<SplashState> {
   
   Future<void> initialize() async {
   try {
+    await Future.delayed(const Duration(seconds: 3));
+
     final hasSeenOnboarding =
         await splashRepository.hasSeenOnboarding();
 
