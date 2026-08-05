@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/presentation/pages/add_book_manually_screen.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/add_manually_button.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/recent_activity.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/recent_book_tile.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_header.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_results.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_text_field.dart';

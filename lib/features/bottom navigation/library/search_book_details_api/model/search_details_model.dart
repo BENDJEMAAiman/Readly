@@ -42,9 +42,12 @@ class SearchDetailsModel extends Equatable {
           : (workJson["description"]?["value"] as String?),
 
       subjects: (workJson["subjects"] as List?)
-          ?.map((e) => e.toString())
+          ?.map((e) => e.toString().trim())
+          .where((e) => e.isNotEmpty)
+          .toSet()
+          .take(4)
           .toList(),
-      
+
       title: edition["title"] as String? ?? basicInfo.title,
 
       publisher: (edition["publishers"] as List?)?.isNotEmpty == true
