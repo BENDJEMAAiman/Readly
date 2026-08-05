@@ -23,11 +23,15 @@ class AppColors {
   static const Color transparent = Colors.transparent;
 
   //buttons
-  static const buttonBlue = Color(0xFF8FBCEB);
+  static const buttonBlue = Color(0xFFADCDED);
+  static const buttonBlueDark = Color(0xFF7FABD8);
 
   //background 
   static const Color background = Color(0xFFF8F5EF);
 
   static const Color indicatorInactive = Color(0xFFD9D9D9);
+
+  //go_back icon
+  static const Color goBackButton = Color(0xFF7FABD8);
 
 }
