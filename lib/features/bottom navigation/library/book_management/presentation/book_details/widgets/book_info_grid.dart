@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/constants/app_assets.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/book_info_tile.dart';
+import 'package:readly/features/bottom%20navigation/library/book_management/presentation/book_details/widgets/book_info_tile.dart';
 
 class BookInfoGrid extends StatelessWidget {
   final String pages;

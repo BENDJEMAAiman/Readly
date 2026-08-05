@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/theme/app_colors.dart';
@@ -71,5 +70,12 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.primary,
     height: 24 / 14,
+  );
+
+  static final inputText = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w500,
+    color: AppColors.primary,
+    height: 1.5,
   );
 }

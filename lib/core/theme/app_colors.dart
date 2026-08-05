@@ -26,7 +26,7 @@ class AppColors {
   static const buttonBlue = Color(0xFFADCDED);
   static const buttonBlueDark = Color(0xFF7FABD8);
 
-  //background 
+  //background
   static const Color background = Color(0xFFF8F5EF);
 
   static const Color indicatorInactive = Color(0xFFD9D9D9);
@@ -34,4 +34,20 @@ class AppColors {
   //go_back icon
   static const Color goBackButton = Color(0xFF7FABD8);
 
+  // Borders
+  static const border = Color(0xFFD8DDE4);
+  static const borderFocused = secondary;
+
+  // Inputs
+  static const inputBackground = white;
+
+  // Placeholder
+  static const hint = Color(0xFF9AA3AF);
+
+  // Cover Placeholder
+  static const uploadIcon = secondary;
+  static const uploadText = secondary;
+
+  // Divider
+  static const divider = Color(0xFFE5E7EB);
 }

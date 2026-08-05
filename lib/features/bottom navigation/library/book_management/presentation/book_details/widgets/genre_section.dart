@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/theme/app_text_styles.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/genre_chip.dart';
+import 'package:readly/features/bottom%20navigation/library/book_management/presentation/book_details/widgets/genre_chip.dart';
 
 class GenresSection extends StatelessWidget {
   final List<String> genres;

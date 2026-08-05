@@ -10,7 +10,10 @@ class AppAssets {
   static const onboarding3 = 'assets/onboarding_img3.png';
 
   static const addIcon = 'assets/addIcon.png';
-  
+
+  static const noteIcon = 'assets/noteIcon.png';
+  static const counterIcon = 'assets/counterIcon.png';
+
   
  
 }
