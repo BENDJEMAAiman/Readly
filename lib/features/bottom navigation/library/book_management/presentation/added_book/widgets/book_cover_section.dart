@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/constants/app_assets.dart';
 import 'package:readly/core/theme/app_colors.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/presentation/book_details/widgets/cover_action_button.dart';
+import 'package:readly/features/bottom%20navigation/library/book_management/presentation/added_book/widgets/cover_action_button.dart';
 
 class BookCoverSection extends StatelessWidget {
   final int? coverId;

@@ -9,6 +9,8 @@ import 'package:readly/features/auth/presentation/pages/congratulation.dart';
 import 'package:readly/features/auth/presentation/pages/login_page.dart';
 import 'package:readly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:readly/features/auth/presentation/pages/forgot_password.dart';
+import 'package:readly/features/bottom%20navigation/library/add_manually/business_logic/book_form_cubit.dart';
+import 'package:readly/features/bottom%20navigation/library/add_manually/presentation/pages/add_book_manually_screen.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/pages/search_screen.dart';
@@ -125,6 +127,14 @@ final GoRouter appRouter = GoRouter(
           child: const OnboardingPage(),
         );
       },
+    ),
+
+    GoRoute(
+      path: Routes.addBookManually,
+      builder: (context, state) => BlocProvider(
+        create: (_) => BookFormCubit(),
+        child: const AddBookManuallyScreen(),
+      ),
     ),
   ],
 );

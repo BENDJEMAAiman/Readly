@@ -15,4 +15,6 @@ class Routes {
   // App
   static const String search = '/search';
   static const String searchDetails = '/search-details';
+
+  static const String addBookManually = '/add-book-manually';
 }

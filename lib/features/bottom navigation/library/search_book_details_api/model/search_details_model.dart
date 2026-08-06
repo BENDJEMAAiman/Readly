@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 
 class SearchDetailsModel extends Equatable {
@@ -60,6 +61,42 @@ class SearchDetailsModel extends Equatable {
 
       numberOfPages:
           edition["number_of_pages"] as int? ?? basicInfo.pagesApprox,
+    );
+  }
+
+  SearchDetailsModel copyWith({
+    String? title,
+    String? author,
+    String? description,
+    String? language,
+    String? publisher,
+    int? numberOfPages,
+    int? coverId,
+    List<String>? subjects,
+  }) {
+    return SearchDetailsModel(
+      workKey: workKey,
+      title: title ?? this.title,
+      author: author ?? this.author,
+      coverId: coverId ?? this.coverId,
+      description: description ?? this.description,
+      language: language ?? this.language,
+      publisher: publisher ?? this.publisher,
+      numberOfPages: numberOfPages ?? this.numberOfPages,
+      subjects: subjects ?? this.subjects,
+    );
+  }
+
+  LibraryBook toLibraryBook() {
+    return LibraryBook(
+      title: title,
+      author: author,
+      description: description,
+      publisher: publisher,
+      language: language,
+      pages: numberOfPages,
+      subjects: subjects ?? const [],
+      coverId: coverId,
     );
   }
 

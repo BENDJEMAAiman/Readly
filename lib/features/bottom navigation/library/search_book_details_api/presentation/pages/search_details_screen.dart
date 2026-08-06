@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_cubit.dart';
@@ -103,7 +104,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                       controller: controllers.title,
                                       validator: BookFormValidators.title,
                                     ),
-                                    
+
                                     SizedBox(height: 18.h),
 
                                     SearchInfoTextField(
@@ -203,6 +204,22 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     if (!_formKey.currentState!.validate()) {
                                       return;
                                     }
+
+                                    final updatedBook = book.copyWith(
+                                      title: controllers.title.text.trim(),
+                                      author: controllers.author.text.trim(),
+                                      publisher: controllers.publisher.text
+                                          .trim(),
+                                      language: controllers.language.text
+                                          .trim(),
+                                      description: controllers.description.text
+                                          .trim(),
+                                      numberOfPages: int.tryParse(
+                                        controllers.pages.text.trim(),
+                                      ),
+                                    );
+
+                                    context.pop(updatedBook.toLibraryBook());
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

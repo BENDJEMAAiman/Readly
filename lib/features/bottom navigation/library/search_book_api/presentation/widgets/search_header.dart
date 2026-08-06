@@ -4,7 +4,13 @@ import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/core/theme/app_text_styles.dart';
 
 class SearchHeader extends StatelessWidget {
-  const SearchHeader({super.key});
+  const SearchHeader({
+    super.key,
+    required this.onBack,
+  });
+
+  final VoidCallback onBack;
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +21,7 @@ class SearchHeader extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: InkWell(
             borderRadius: BorderRadius.circular(20.r),
-            onTap: () => Navigator.pop(context),
+            onTap: onBack,
             child: Padding(
               padding: EdgeInsets.all(4.r),
               child: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.goBackButton,),

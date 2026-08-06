@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:readly/core/theme/app_colors.dart';
+import 'package:readly/features/bottom%20navigation/library/add_manually/business_logic/book_form_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/presentation/widgets/add_image.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/controllers/book_form_controllers.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/validators/book_form_validators.dart';
@@ -19,6 +22,7 @@ class _AddBookManuallyScreenState extends State<AddBookManuallyScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final controllers = BookFormControllers();
+
   @override
   void dispose() {
     controllers.dispose();
@@ -27,137 +31,167 @@ class _AddBookManuallyScreenState extends State<AddBookManuallyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SearchDetailsHeader(),
-                      SizedBox(height: 32.h),
-
-                      AddImage(),
-
-                      SizedBox(height: 32.h),
-
-                      FormSection(
-                        title: 'Basic Information',
+    return BlocProvider(
+      create: (_) => BookFormCubit(),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: AppColors.background,
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SearchInfoTextField(
-                              label: "Book Title",
-                              hint: "Enter title",
-                              controller: controllers.title,
-                              validator: BookFormValidators.title,
+                            const SearchDetailsHeader(),
+
+                            SizedBox(height: 32.h),
+
+                            const AddImage(),
+
+                            SizedBox(height: 32.h),
+
+                            FormSection(
+                              title: 'Basic Information',
+                              child: Column(
+                                children: [
+                                  SearchInfoTextField(
+                                    label: "Book Title",
+                                    hint: "Enter title",
+                                    controller: controllers.title,
+                                    validator: BookFormValidators.title,
+                                  ),
+
+                                  SizedBox(height: 18.h),
+
+                                  SearchInfoTextField(
+                                    label: 'Author',
+                                    hint: 'Enter author',
+                                    controller: controllers.author,
+                                  ),
+                                ],
+                              ),
                             ),
 
-                            SizedBox(height: 18.h),
+                            FormSection(
+                              title: 'Publication Details',
+                              child: Column(
+                                children: [
+                                  SearchInfoTextField(
+                                    label: 'Publisher',
+                                    hint: 'Enter publisher',
+                                    controller: controllers.publisher,
+                                  ),
 
-                            SearchInfoTextField(
-                              label: 'Author',
-                              hint: 'Enter author',
-                              controller: controllers.author,
+                                  SizedBox(height: 18.h),
+
+                                  SearchInfoTextField(
+                                    label: 'Language',
+                                    hint: 'Enter language',
+                                    controller: controllers.language,
+                                  ),
+
+                                  SizedBox(height: 18.h),
+
+                                  SearchInfoTextField(
+                                    label: "Pages",
+                                    hint: "Enter number of pages",
+                                    controller: controllers.pages,
+                                    keyboardType: TextInputType.number,
+                                    validator: BookFormValidators.pages,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
 
-                      FormSection(
-                        title: 'Publication Details',
-                        child: Column(
-                          children: [
-                            SearchInfoTextField(
-                              label: 'Publisher',
-                              hint: 'Enter publisher',
-                              controller: controllers.publisher,
+                            FormSection(
+                              title: 'Description',
+                              child: SearchInfoTextField(
+                                label: 'Book Description',
+                                hint: 'Enter description',
+                                controller: controllers.description,
+                                maxLines: 6,
+                              ),
                             ),
 
-                            SizedBox(height: 18.h),
-
-                            SearchInfoTextField(
-                              label: 'Language',
-                              hint: 'Enter language',
-                              controller: controllers.language,
+                            FormSection(
+                              title: 'Subjects',
+                              child: const Text("subject to choose"),
                             ),
 
-                            SizedBox(height: 18.h),
+                            SizedBox(height: 12.h),
 
-                            SearchInfoTextField(
-                              label: "Pages",
-                              hint: "Enter number of pages",
-                              controller: controllers.pages,
-                              keyboardType: TextInputType.number,
-                              validator: BookFormValidators.pages,
-                            ),
-                          ],
-                        ),
-                      ),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 54.h,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.buttonBlueDark,
+                                  foregroundColor: AppColors.white,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (!_formKey.currentState!.validate()) {
+                                    return;
+                                  }
 
-                      FormSection(
-                        title: 'Description',
-                        child: SearchInfoTextField(
-                          label: 'Book Description',
-                          hint: 'Enter description',
-                          controller: controllers.description,
-                          maxLines: 6,
-                        ),
-                      ),
-                      FormSection(
-                        title: 'Subjects',
-                        child: Text("subject to choose"),
-                      ),
+                                  final cubit = context.read<BookFormCubit>();
 
-                      SizedBox(height: 12.h),
+                                  final book = cubit.createLibraryBook(
+                                    title: controllers.title.text.trim(),
+                                    author: controllers.author.text.trim(),
+                                    publisher: controllers.publisher.text
+                                        .trim(),
+                                    language: controllers.language.text.trim(),
+                                    description: controllers.description.text
+                                        .trim(),
+                                    category:
+                                        '', // we'll replace this when Subjects are implemented
+                                    pages: int.tryParse(
+                                      controllers.pages.text.trim(),
+                                    ),
+                                  );
 
-                      SizedBox(
-                        width: double.infinity,
-                        height: 54.h,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.buttonBlueDark,
-                            foregroundColor: AppColors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14.r),
-                            ),
-                          ),
-                          onPressed: () {
-                            if (!_formKey.currentState!.validate()) {
-                              return;
-                            }
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.save),
-                              SizedBox(width: 8.w),
-                              Text(
-                                'Save Book',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
+                                  context.pop(book);
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.save),
+
+                                    SizedBox(width: 8.w),
+
+                                    Text(
+                                      'Save Book',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+
+                            SizedBox(height: 32.h),
+                          ],
                         ),
                       ),
-
-                      SizedBox(height: 32.h),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
