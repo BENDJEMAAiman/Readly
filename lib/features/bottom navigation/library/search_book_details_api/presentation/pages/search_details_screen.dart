@@ -5,6 +5,8 @@ import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_state.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/controllers/book_form_controllers.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/validators/book_form_validators.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/book_cover_card.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/form_section.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/search_details_header.dart';
@@ -22,12 +24,7 @@ class SearchDetailsScreen extends StatefulWidget {
 class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final titleController = TextEditingController();
-  final authorController = TextEditingController();
-  final languageController = TextEditingController();
-  final pagesController = TextEditingController();
-  final publisherController = TextEditingController();
-  final descriptionController = TextEditingController();
+  final controllers = BookFormControllers();
 
   bool _initialized = false;
 
@@ -40,26 +37,14 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
 
   @override
   void dispose() {
-    titleController.dispose();
-    authorController.dispose();
-    languageController.dispose();
-    pagesController.dispose();
-    publisherController.dispose();
-    descriptionController.dispose();
+    controllers.dispose();
     super.dispose();
   }
 
   void _fillControllers(SearchDetailsSuccess state) {
     if (_initialized) return;
 
-    final book = state.book;
-
-    titleController.text = book.title;
-    authorController.text = book.author;
-    languageController.text = book.language ?? '';
-    publisherController.text = book.publisher ?? '';
-    pagesController.text = book.numberOfPages?.toString() ?? '';
-    descriptionController.text = book.description ?? '';
+    controllers.fill(state.book);
 
     _initialized = true;
   }
@@ -115,24 +100,16 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     SearchInfoTextField(
                                       label: "Book Title",
                                       hint: "Enter title",
-                                      controller: titleController,
-
-                                      validator: (value) {
-                                        if (value == null ||
-                                            value.trim().isEmpty) {
-                                          return "Book title is required";
-                                        }
-
-                                        return null;
-                                      },
+                                      controller: controllers.title,
+                                      validator: BookFormValidators.title,
                                     ),
-
+                                    
                                     SizedBox(height: 18.h),
 
                                     SearchInfoTextField(
                                       label: 'Author',
                                       hint: 'Enter author',
-                                      controller: authorController,
+                                      controller: controllers.author,
                                     ),
                                   ],
                                 ),
@@ -145,7 +122,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     SearchInfoTextField(
                                       label: 'Publisher',
                                       hint: 'Enter publisher',
-                                      controller: publisherController,
+                                      controller: controllers.publisher,
                                     ),
 
                                     SizedBox(height: 18.h),
@@ -153,7 +130,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     SearchInfoTextField(
                                       label: 'Language',
                                       hint: 'Enter language',
-                                      controller: languageController,
+                                      controller: controllers.language,
                                     ),
 
                                     SizedBox(height: 18.h),
@@ -161,27 +138,9 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     SearchInfoTextField(
                                       label: "Pages",
                                       hint: "Enter number of pages",
-                                      controller: pagesController,
+                                      controller: controllers.pages,
                                       keyboardType: TextInputType.number,
-
-                                      validator: (value) {
-                                        if (value == null ||
-                                            value.trim().isEmpty) {
-                                          return "Number of pages is required";
-                                        }
-
-                                        final pages = int.tryParse(value);
-
-                                        if (pages == null) {
-                                          return "Enter a valid number";
-                                        }
-
-                                        if (pages <= 0) {
-                                          return "Pages must be greater than zero";
-                                        }
-
-                                        return null;
-                                      },
+                                      validator: BookFormValidators.pages,
                                     ),
                                   ],
                                 ),
@@ -192,7 +151,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                 child: SearchInfoTextField(
                                   label: 'Book Description',
                                   hint: 'Enter description',
-                                  controller: descriptionController,
+                                  controller: controllers.description,
                                   maxLines: 6,
                                 ),
                               ),

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readly/core/routing/routes.dart';
-import 'package:readly/core/validators/auth_validators.dart';
+import 'package:readly/features/auth/presentation/validators/auth_validators.dart';
 import 'package:readly/features/auth/business_logic/auth_cubit.dart';
 import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/auth/presentation/widgets%20/auth_header.dart';
