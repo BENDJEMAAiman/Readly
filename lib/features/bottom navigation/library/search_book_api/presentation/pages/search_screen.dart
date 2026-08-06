@@ -35,6 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               SearchHeader(
                 onBack: () {
+                  debugPrint('Returning to Library: ${_bookToAdd?.title}');
                   context.pop(_bookToAdd);
                 },
               ),
@@ -50,7 +51,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     );
 
                     if (book != null) {
-                      // we'll handle it next
+                      debugPrint('Manual book received in SearchScreen');
+                      debugPrint(book.title);
                     }
                   } catch (e, stackTrace) {
                     debugPrint('Navigation error: $e');

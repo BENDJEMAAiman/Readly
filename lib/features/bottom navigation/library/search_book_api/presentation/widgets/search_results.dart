@@ -64,6 +64,8 @@ class SearchResults extends StatelessWidget {
 
                       if (bookToAdd != null) {
                         onBookSelected(bookToAdd);
+                        debugPrint('Online book received in SearchResults');
+                        debugPrint(bookToAdd.title);
                       }
                     } catch (e) {
                       debugPrint(e.toString());
