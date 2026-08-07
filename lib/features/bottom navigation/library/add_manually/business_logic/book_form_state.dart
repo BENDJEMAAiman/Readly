@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
+
 class BookFormState {
   final String title;
   final String author;
@@ -11,6 +13,8 @@ class BookFormState {
   final bool isSuccess;
   final String? errorMessage;
 
+  final ReadingStatus? readingStatus;
+
   const BookFormState({
     this.title = '',
     this.author = '',
@@ -20,6 +24,7 @@ class BookFormState {
     this.isSubmitting = false,
     this.isSuccess = false,
     this.errorMessage,
+    this.readingStatus,
   });
 
   BookFormState copyWith({
@@ -33,6 +38,7 @@ class BookFormState {
     bool? isSuccess,
     String? errorMessage,
     bool clearError = false,
+    ReadingStatus? readingStatus,
   }) {
     return BookFormState(
       title: title ?? this.title,
@@ -47,6 +53,7 @@ class BookFormState {
       errorMessage: clearError
           ? null
           : errorMessage ?? this.errorMessage,
+      readingStatus: readingStatus ?? this.readingStatus,
     );
   }
 }

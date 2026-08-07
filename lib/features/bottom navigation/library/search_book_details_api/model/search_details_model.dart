@@ -87,7 +87,9 @@ class SearchDetailsModel extends Equatable {
     );
   }
 
-  LibraryBook toLibraryBook() {
+  LibraryBook toLibraryBook({
+    required ReadingStatus readingStatus,
+  }) {
     return LibraryBook(
       title: title,
       author: author,
@@ -97,6 +99,7 @@ class SearchDetailsModel extends Equatable {
       pages: numberOfPages,
       subjects: subjects ?? const [],
       coverId: coverId,
+      readingStatus: readingStatus,
     );
   }
 

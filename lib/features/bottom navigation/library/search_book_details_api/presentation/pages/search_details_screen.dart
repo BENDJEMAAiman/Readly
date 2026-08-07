@@ -12,6 +12,7 @@ import 'package:readly/features/bottom%20navigation/library/search_book_details_
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/form_section.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/search_details_header.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/search_info_text_field.dart';
+import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/search_reading_status_section.dart';
 
 class SearchDetailsScreen extends StatefulWidget {
   final SearchModel basicInfo;
@@ -157,6 +158,8 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                 ),
                               ),
 
+                              const SearchReadingStatusSection(),
+
                               if (book.subjects != null &&
                                   book.subjects!.isNotEmpty)
                                 FormSection(
@@ -205,6 +208,22 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                       return;
                                     }
 
+                                    final cubit = context
+                                        .read<SearchDetailsCubit>();
+
+                                    if (!cubit.isReadingStatusSelected) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Please choose a reading status.',
+                                          ),
+                                        ),
+                                      );
+                                      return;
+                                    }
+
                                     final updatedBook = book.copyWith(
                                       title: controllers.title.text.trim(),
                                       author: controllers.author.text.trim(),
@@ -219,7 +238,9 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                       ),
                                     );
 
-                                    context.pop(updatedBook.toLibraryBook());
+                                    context.pop(updatedBook.toLibraryBook(
+                                      readingStatus: cubit.selectedReadingStatus,
+                                    ));
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

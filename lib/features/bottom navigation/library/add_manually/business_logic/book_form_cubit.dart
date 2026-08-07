@@ -59,6 +59,15 @@ class BookFormCubit extends Cubit<BookFormState> {
       pages: pages,
       subjects: category.isEmpty ? [] : [category],
       coverFile: state.coverImage,
+      readingStatus: state.readingStatus!,
     );
+  }
+
+  bool get isReadingStatusSelected {
+    return state.readingStatus != null;
+  }
+
+  void updateReadingStatus(ReadingStatus status) {
+    emit(state.copyWith(readingStatus: status));
   }
 }

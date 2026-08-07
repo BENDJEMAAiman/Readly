@@ -8,7 +8,6 @@ import 'package:readly/features/bottom%20navigation/library/search_book_api/pres
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_header.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_results.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_text_field.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/model/search_details_model.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

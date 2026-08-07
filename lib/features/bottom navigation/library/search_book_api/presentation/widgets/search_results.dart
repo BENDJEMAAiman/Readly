@@ -9,7 +9,6 @@ import 'package:readly/features/bottom%20navigation/library/search_book_api/busi
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_state.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/recent_activity.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_result_tile.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/model/search_details_model.dart';
 
 class SearchResults extends StatelessWidget {
   const SearchResults({super.key, required this.onBookSelected});

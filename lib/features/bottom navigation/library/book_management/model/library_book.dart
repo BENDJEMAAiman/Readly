@@ -18,6 +18,16 @@ class LibraryBook {
   /// Local image selected manually.
   final File? coverFile;
 
+  /// Filled after upload to Firebase Storage.
+  final String? coverImageUrl;
+
+  // later
+  final String? id;
+  final DateTime? createdAt;
+ 
+
+  final ReadingStatus readingStatus;  
+
   const LibraryBook({
     required this.title,
     required this.author,
@@ -28,5 +38,17 @@ class LibraryBook {
     this.subjects = const [],
     this.coverId,
     this.coverFile,
+    this.coverImageUrl,
+    this.createdAt,
+    this.id,
+    required this.readingStatus,
   });
+}
+
+
+
+enum ReadingStatus {
+  wantToRead,
+  reading,
+  completed,
 }

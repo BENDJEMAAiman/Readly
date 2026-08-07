@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/business_logic/book_form_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/presentation/widgets/add_image.dart';
+import 'package:readly/features/bottom%20navigation/library/add_manually/presentation/widgets/reading_status_section.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/controllers/book_form_controllers.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/validators/book_form_validators.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/form_section.dart';
@@ -119,6 +120,8 @@ class _AddBookManuallyScreenState extends State<AddBookManuallyScreen> {
                               ),
                             ),
 
+                            const ReadingStatusSection(),
+
                             FormSection(
                               title: 'Subjects',
                               child: const Text("subject to choose"),
@@ -144,6 +147,17 @@ class _AddBookManuallyScreenState extends State<AddBookManuallyScreen> {
                                   }
 
                                   final cubit = context.read<BookFormCubit>();
+
+                                  if (!cubit.isReadingStatusSelected) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Please choose a reading status.",
+                                        ),
+                                      ),
+                                    );
+                                    return;
+                                  }
 
                                   final book = cubit.createLibraryBook(
                                     title: controllers.title.text.trim(),
