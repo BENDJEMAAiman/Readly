@@ -5,11 +5,11 @@ import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/core/theme/app_text_styles.dart';
 
 class AboutBookSection extends StatefulWidget {
-  final String description;
+  final String? description;
 
   const AboutBookSection({
     super.key,
-    required this.description,
+    this.description,
   });
 
   @override

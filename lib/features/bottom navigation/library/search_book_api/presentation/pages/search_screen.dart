@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/core/theme/app_colors.dart';
+import 'package:readly/features/bottom%20navigation/library/library/business_logic/library_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/add_manually_button.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_header.dart';
@@ -52,6 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     if (book != null) {
                       debugPrint('Manual book received in SearchScreen');
                       debugPrint(book.title);
+                      await context.read<LibraryCubit>().addBook(book);
                     }
                   } catch (e, stackTrace) {
                     debugPrint('Navigation error: $e');

@@ -11,6 +11,10 @@ import 'package:readly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:readly/features/auth/presentation/pages/forgot_password.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/business_logic/book_form_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/presentation/pages/add_book_manually_screen.dart';
+import 'package:readly/features/bottom%20navigation/library/library/business_logic/library_cubit.dart';
+import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/book_view/pages/view_book_screen.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/pages/library_screen.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/pages/search_screen.dart';
@@ -23,28 +27,75 @@ import 'package:readly/features/splash/presentation/splash_page.dart';
 
 final GoRouter appRouter = GoRouter(
   routes: [
-    GoRoute(
-      path: Routes.search,
-      builder: (context, state) {
+    // ---------------------------------------------------------
+    // LIBRARY FLOW
+    // ---------------------------------------------------------
+    ShellRoute(
+      builder: (context, state, child) {
         return BlocProvider(
-          create: (_) => SearchCubit(searchRepository),
-          child: const SearchScreen(),
+          create: (_) => LibraryCubit(libraryRepository)..fetchUserBooks(),
+          child: child,
         );
       },
+      routes: [
+        GoRoute(
+          path: Routes.library,
+          builder: (context, state) {
+            return const LibraryScreen();
+          },
+        ),
+
+        GoRoute(
+          path: Routes.search,
+          builder: (context, state) {
+            return BlocProvider(
+              create: (_) => SearchCubit(searchRepository),
+              child: const SearchScreen(),
+            );
+          },
+        ),
+
+        GoRoute(
+          path: Routes.searchDetails,
+          builder: (context, state) {
+            final basicInfo = state.extra as SearchModel;
+
+            return BlocProvider(
+              create: (_) =>
+                  SearchDetailsCubit(searchDetailsRepository),
+              child: SearchDetailsScreen(
+                basicInfo: basicInfo,
+              ),
+            );
+          },
+        ),
+
+        GoRoute(
+          path: Routes.addBookManually,
+          builder: (context, state) {
+            return BlocProvider(
+              create: (_) => BookFormCubit(),
+              child: const AddBookManuallyScreen(),
+            );
+          },
+        ),
+
+        GoRoute(
+          path: Routes.viewBook,
+          builder: (context, state) {
+            final book = state.extra as LibraryBook;
+
+            return BookViewScreen(
+              book: book,
+            );
+          },
+        ),
+      ],
     ),
 
-    GoRoute(
-      path: Routes.searchDetails,
-      builder: (context, state) {
-        final basicInfo = state.extra as SearchModel;
-
-        return BlocProvider(
-          create: (_) => SearchDetailsCubit(searchDetailsRepository),
-          child: SearchDetailsScreen(basicInfo: basicInfo),
-        );
-      },
-    ),
-
+    // ---------------------------------------------------------
+    // AUTH
+    // ---------------------------------------------------------
     GoRoute(
       path: Routes.login,
       builder: (context, state) {
@@ -82,7 +133,9 @@ final GoRouter appRouter = GoRouter(
 
         return BlocProvider(
           create: (_) => AuthCubit(authRepository),
-          child: CheckEmailPassword(email: email),
+          child: CheckEmailPassword(
+            email: email,
+          ),
         );
       },
     ),
@@ -94,7 +147,9 @@ final GoRouter appRouter = GoRouter(
 
         return BlocProvider(
           create: (_) => AuthCubit(authRepository),
-          child: CheckEmailVerification(email: email),
+          child: CheckEmailVerification(
+            email: email,
+          ),
         );
       },
     ),
@@ -109,6 +164,9 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
+    // ---------------------------------------------------------
+    // SPLASH
+    // ---------------------------------------------------------
     GoRoute(
       path: Routes.splash,
       builder: (context, state) {
@@ -119,6 +177,9 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
+    // ---------------------------------------------------------
+    // ONBOARDING
+    // ---------------------------------------------------------
     GoRoute(
       path: Routes.onboarding,
       builder: (context, state) {
@@ -127,14 +188,6 @@ final GoRouter appRouter = GoRouter(
           child: const OnboardingPage(),
         );
       },
-    ),
-
-    GoRoute(
-      path: Routes.addBookManually,
-      builder: (context, state) => BlocProvider(
-        create: (_) => BookFormCubit(),
-        child: const AddBookManuallyScreen(),
-      ),
     ),
   ],
 );

@@ -49,6 +49,7 @@ class BookFormCubit extends Cubit<BookFormState> {
     required String description,
     required String category,
     required int? pages,
+    File? coverFile,
   }) {
     return LibraryBook(
       title: title,

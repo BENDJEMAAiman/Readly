@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readly/core/network/dio_client.dart';
+import 'package:readly/core/network/supabase_storage_service.dart';
 import 'package:readly/features/auth/data/auth_repository.dart';
 import 'package:readly/features/auth/data/auth_web_service.dart';
 import 'package:readly/features/bottom%20navigation/library/library/data/library_web_service.dart';
@@ -14,6 +14,7 @@ import 'package:readly/features/onboarding/data/onboarding_repository.dart';
 import 'package:readly/features/splash/data/splash_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:readly/features/bottom%20navigation/library/library/data/library_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 //library api search
 final searchWebService = SearchWebService(DioClient.dio);
@@ -41,11 +42,13 @@ late SplashRepository splashRepository;
 late OnboardingRepository onboardingRepository;
 
 final firebaseFirestore = FirebaseFirestore.instance;
-final firebaseStorage = FirebaseStorage.instance;
+
 
 final libraryWebService = LibraryWebService(
   FirebaseFirestore.instance,
-  FirebaseStorage.instance,
+  SupabaseStorageService(
+    Supabase.instance.client,
+  ),
   FirebaseAuth.instance,
 );
 

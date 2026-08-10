@@ -122,11 +122,6 @@ class _AddBookManuallyScreenState extends State<AddBookManuallyScreen> {
 
                             const ReadingStatusSection(),
 
-                            FormSection(
-                              title: 'Subjects',
-                              child: const Text("subject to choose"),
-                            ),
-
                             SizedBox(height: 12.h),
 
                             SizedBox(
@@ -172,7 +167,10 @@ class _AddBookManuallyScreenState extends State<AddBookManuallyScreen> {
                                     pages: int.tryParse(
                                       controllers.pages.text.trim(),
                                     ),
+                                    coverFile: cubit.state.coverImage,
                                   );
+
+                                  
 
                                   context.pop(book);
                                 },

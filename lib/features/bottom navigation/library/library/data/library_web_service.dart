@@ -2,20 +2,20 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:readly/core/network/supabase_storage_service.dart';
 import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 
 class LibraryWebService {
 
   final FirebaseFirestore firestore;
-  final FirebaseStorage storage;
-  final FirebaseAuth auth;
+final SupabaseStorageService storageService;
+final FirebaseAuth auth;
 
   LibraryWebService(
-    this.firestore,
-    this.storage,
-    this.auth,
-  );
+  this.firestore,
+  this.storageService,
+  this.auth,
+);
 
   //Returns the currently authenticated user's UID.
   String _getCurrentUserId() {
@@ -48,33 +48,23 @@ class LibraryWebService {
   /// Uploads a book cover to Firebase Storage and
   /// returns its download URL.
   Future<String> uploadBookCover({
-    required File file,
-    required String bookId,
-  }) async {
-    try {
-      final uid = _getCurrentUserId();
+  required File file,
+  required String bookId,
+}) async {
+  try {
+    final uid = _getCurrentUserId();
 
-      final storageReference = storage
-          .ref()
-          .child('users')
-          .child(uid)
-          .child('books')
-          .child(bookId)
-          .child('cover.jpg');
-
-      await storageReference.putFile(file);
-
-      return await storageReference.getDownloadURL();
-    } on FirebaseException catch (e) {
-      throw Exception(
-        'Failed to upload book cover: ${e.message ?? e.code}',
-      );
-    } catch (e) {
-      throw Exception(
-        'Failed to upload book cover: $e',
-      );
-    }
+    return await storageService.uploadBookCover(
+      file: file,
+      userId: uid,
+      bookId: bookId,
+    );
+  } catch (e) {
+    throw Exception(
+      'Failed to upload book cover: $e',
+    );
   }
+}
 
   /// Saves a book inside: users/{uid}/books/{bookId}
   Future<void> saveBook({
@@ -165,34 +155,19 @@ class LibraryWebService {
 
   // Deletes the cover associated with a book.
   Future<void> deleteBookCover(String bookId) async {
-    try {
-      final uid = _getCurrentUserId();
+  try {
+    final uid = _getCurrentUserId();
 
-      final storageReference = storage
-          .ref()
-          .child('users')
-          .child(uid)
-          .child('books')
-          .child(bookId)
-          .child('cover.jpg');
-
-      await storageReference.delete();
-    } on FirebaseException catch (e) {
-      // A missing cover should not necessarily be considered
-      // a fatal error during cleanup.
-      if (e.code == 'object-not-found') {
-        return;
-      }
-
-      throw Exception(
-        'Failed to delete book cover: ${e.message ?? e.code}',
-      );
-    } catch (e) {
-      throw Exception(
-        'Failed to delete book cover: $e',
-      );
-    }
+    await storageService.deleteBookCover(
+      userId: uid,
+      bookId: bookId,
+    );
+  } catch (e) {
+    throw Exception(
+      'Failed to delete book cover: $e',
+    );
   }
+}
 
   Future<void> updateBook(LibraryBook book) async {
   try {

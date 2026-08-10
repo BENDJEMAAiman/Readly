@@ -22,7 +22,7 @@ class LibraryBook {
   // Local image selected manually. it will not be stored in Firestore.
   final File? coverFile;
 
-  // Firebase Storage download URL.
+  // Supabase Storage public URL.
   final String? coverImageUrl;
 
   final DateTime? createdAt;
@@ -94,8 +94,8 @@ class LibraryBook {
     );
   }
 
-  // coverFile is intentionally excluded:
-  //coverFile is a local File and must first be uploaded to Firebase Storage.
+ // coverFile is intentionally excluded:
+// coverFile is a local File and must first be uploaded to Supabase Storage.
   Map<String, dynamic> toMap() {
     return {
       'title': title,
@@ -156,3 +156,17 @@ class LibraryBook {
 }
 
 enum ReadingStatus { wantToRead, reading, completed }
+
+
+extension ReadingStatusExtension on ReadingStatus {
+  String get displayName {
+    switch (this) {
+      case ReadingStatus.wantToRead:
+        return 'Want to read';
+      case ReadingStatus.reading:
+        return 'Reading';
+      case ReadingStatus.completed:
+        return 'Completed';
+    }
+  }
+}

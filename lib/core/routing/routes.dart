@@ -17,4 +17,7 @@ class Routes {
   static const String searchDetails = '/search-details';
 
   static const String addBookManually = '/add-book-manually';
+
+  static const String library = '/library';
+  static const String viewBook = '/viewBook';
 }

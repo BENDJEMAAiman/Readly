@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/constants/app_assets.dart';
-import 'package:readly/features/bottom%20navigation/library/library/presentation/added_book/widgets/book_info_tile.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/book_view/widgets/book_info_tile.dart';
 
 class BookInfoGrid extends StatelessWidget {
-  final String pages;
-  final String language;
-  final String publisher;
+  final int? pages;
+  final String? language;
+  final String? publisher;
 
   const BookInfoGrid({
     super.key,
-    required this.pages,
-    required this.language,
-    required this.publisher,
+    this.pages,
+    this.language,
+    this.publisher,
   });
 
   @override
@@ -24,7 +24,7 @@ class BookInfoGrid extends StatelessWidget {
             Expanded(
               child: BookInfoTile(
                 label: "Pages",
-                value: pages,
+                value: pages.toString(),
               ),
             ),
 
@@ -33,7 +33,7 @@ class BookInfoGrid extends StatelessWidget {
             Expanded(
               child: BookInfoTile(
                 label: "Language",
-                value: language,
+                value: language ?? " ",
               ),
             ),
           ],
@@ -47,7 +47,7 @@ class BookInfoGrid extends StatelessWidget {
             Expanded(
               child: BookInfoTile(
                 label: "Publisher",
-                value: publisher,
+                value: publisher ?? " ",
               ),
             ),
 
