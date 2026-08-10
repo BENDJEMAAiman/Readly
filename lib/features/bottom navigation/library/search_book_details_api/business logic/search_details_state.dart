@@ -1,4 +1,4 @@
-import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
+import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/model/search_details_model.dart';
 
 sealed class SearchDetailsState {

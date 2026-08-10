@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/theme/app_text_styles.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/business%20logic/search_details_state.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/presentation/added_book/widgets/about_book_section.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/presentation/added_book/widgets/book_cover_section.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/presentation/added_book/widgets/book_info_card.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/presentation/added_book/widgets/book_info_grid.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/presentation/added_book/widgets/genre_section.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/presentation/added_book/widgets/reading_button.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/added_book/widgets/about_book_section.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/added_book/widgets/book_cover_section.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/added_book/widgets/book_info_card.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/added_book/widgets/book_info_grid.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/added_book/widgets/genre_section.dart';
+import 'package:readly/features/bottom%20navigation/library/library/presentation/added_book/widgets/reading_button.dart';
 
 class SearchDetailsBody extends StatelessWidget {
   const SearchDetailsBody({super.key});

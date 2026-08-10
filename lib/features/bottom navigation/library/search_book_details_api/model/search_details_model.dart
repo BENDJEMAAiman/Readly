@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
+import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/model/search_model.dart';
 
 class SearchDetailsModel extends Equatable {

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/core/theme/app_text_styles.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
+import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/business_logic/search_state.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/recent_activity.dart';

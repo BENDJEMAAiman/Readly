@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/business_logic/book_form_cubit.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/business_logic/book_form_state.dart';
 import 'package:readly/features/bottom%20navigation/library/add_manually/presentation/widgets/reading_status_chip.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
+import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_details_api/presentation/widgets/form_section.dart';
 
 class ReadingStatusSection extends StatelessWidget {

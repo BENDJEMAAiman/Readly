@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/core/theme/app_colors.dart';
-import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
+import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/add_manually_button.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_header.dart';
 import 'package:readly/features/bottom%20navigation/library/search_book_api/presentation/widgets/search_results.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:readly/features/bottom%20navigation/library/book_management/model/library_book.dart';
+import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 
 class BookFormState {
   final String title;
