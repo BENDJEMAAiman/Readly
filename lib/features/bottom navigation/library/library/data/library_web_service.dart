@@ -2,20 +2,20 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:readly/core/network/supabase_storage_service.dart';
+import 'package:readly/core/network/cloudinary_service.dart';
 import 'package:readly/features/bottom%20navigation/library/library/model/library_book.dart';
 
 class LibraryWebService {
 
   final FirebaseFirestore firestore;
-final SupabaseStorageService storageService;
-final FirebaseAuth auth;
+  final CloudinaryService storageService;
+  final FirebaseAuth auth;
 
   LibraryWebService(
-  this.firestore,
-  this.storageService,
-  this.auth,
-);
+    this.firestore,
+    this.storageService,
+    this.auth,
+  );
 
   //Returns the currently authenticated user's UID.
   String _getCurrentUserId() {
@@ -47,7 +47,7 @@ final FirebaseAuth auth;
 
   /// Uploads a book cover to Firebase Storage and
   /// returns its download URL.
-  Future<String> uploadBookCover({
+ Future<String> uploadBookCover({
   required File file,
   required String bookId,
 }) async {
@@ -153,21 +153,8 @@ final FirebaseAuth auth;
     }
   }
 
-  // Deletes the cover associated with a book.
-  Future<void> deleteBookCover(String bookId) async {
-  try {
-    final uid = _getCurrentUserId();
 
-    await storageService.deleteBookCover(
-      userId: uid,
-      bookId: bookId,
-    );
-  } catch (e) {
-    throw Exception(
-      'Failed to delete book cover: $e',
-    );
-  }
-}
+  
 
   Future<void> updateBook(LibraryBook book) async {
   try {

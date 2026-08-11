@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/constants/app_assets.dart';
@@ -5,16 +6,61 @@ import 'package:readly/core/theme/app_colors.dart';
 
 class BookCoverSection extends StatelessWidget {
   final int? coverId;
+  final String? coverImageUrl;
 
   final VoidCallback? onCounterPressed;
   final VoidCallback? onNotesPressed;
 
   const BookCoverSection({
     super.key,
-    required this.coverId,
+    this.coverId,
+    this.coverImageUrl,
     this.onCounterPressed,
     this.onNotesPressed,
   });
+
+  Widget _buildCoverImage() {
+    // 1. Prefer the manually uploaded Cloudinary cover.
+    if (coverImageUrl != null && coverImageUrl!.isNotEmpty) {
+      return Image.network(
+        coverImageUrl!,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) {
+          return const Center(
+            child: Icon(
+              Icons.menu_book_rounded,
+              size: 80,
+            ),
+          );
+        },
+      );
+    }
+
+    // 2. If there is no Cloudinary cover,
+    //    use the OpenLibrary cover.
+    if (coverId != null) {
+      return Image.network(
+        'https://covers.openlibrary.org/b/id/$coverId-M.jpg',
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) {
+          return const Center(
+            child: Icon(
+              Icons.menu_book_rounded,
+              size: 80,
+            ),
+          );
+        },
+      );
+    }
+
+    // 3. No cover available.
+    return const Center(
+      child: Icon(
+        Icons.menu_book_rounded,
+        size: 80,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +82,7 @@ class BookCoverSection extends StatelessWidget {
                 padding: EdgeInsets.all(16.w),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16.r),
-                  child: coverId == null
-                      ? const Center(
-                          child: Icon(Icons.menu_book_rounded, size: 80),
-                        )
-                      : Image.network(
-                          "https://covers.openlibrary.org/b/id/$coverId-L.jpg",
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Center(
-                            child: Icon(Icons.menu_book_rounded, size: 80),
-                          ),
-                        ),
+                  child: _buildCoverImage(),
                 ),
               ),
             ),
@@ -78,7 +114,11 @@ class BookCoverSection extends StatelessWidget {
 
                   SizedBox(width: 10.w),
 
-                  Container(width: 1, height: 24.h, color: Colors.white),
+                  Container(
+                    width: 1,
+                    height: 24.h,
+                    color: Colors.white,
+                  ),
 
                   SizedBox(width: 10.w),
 

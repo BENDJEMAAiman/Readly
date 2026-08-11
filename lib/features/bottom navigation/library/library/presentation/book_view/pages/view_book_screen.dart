@@ -12,13 +12,13 @@ import 'package:readly/features/bottom%20navigation/library/library/presentation
 class BookViewScreen extends StatelessWidget {
   final LibraryBook book;
 
-  const BookViewScreen({
-    super.key,
-    required this.book,
-  });
+  const BookViewScreen({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('BOOK TITLE: ${book.title}');
+    debugPrint('CLOUDINARY URL: ${book.coverImageUrl}');
+    debugPrint('OPEN LIBRARY COVER ID: ${book.coverId}');
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -47,6 +47,7 @@ class BookViewScreen extends StatelessWidget {
                 SizedBox(height: 16.h),
 
                 BookCoverSection(
+                  coverImageUrl: book.coverImageUrl,
                   coverId: book.coverId,
                   onCounterPressed: () {
                     //Open reading counter/session history.
