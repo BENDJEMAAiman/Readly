@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:readly/core/theme/app_colors.dart';
-import 'package:readly/core/theme/app_text_styles.dart';
 import 'package:readly/features/auth/presentation/widgets%20/primaryButton.dart';
 
 class OnboardingActions extends StatelessWidget {
@@ -27,26 +25,7 @@ class OnboardingActions extends StatelessWidget {
 
         SizedBox(height: 8.h),
 
-        SizedBox(
-          width: double.infinity,
-          height: 56.h,
-          child: OutlinedButton(
-            onPressed: onSignIn,
-            style: OutlinedButton.styleFrom(
-              backgroundColor: AppColors.background,
-              side: BorderSide.none,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-            ),
-            child: Text(
-              'Sign in',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.secondary,
-              ),
-            ),
-          ),
-        ),
+        
       ],
     );
   }

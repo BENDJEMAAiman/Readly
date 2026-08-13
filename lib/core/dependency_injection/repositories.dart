@@ -5,15 +5,15 @@ import 'package:readly/core/network/dio_client.dart';
 import 'package:readly/core/network/cloudinary_service.dart';
 import 'package:readly/features/auth/data/auth_repository.dart';
 import 'package:readly/features/auth/data/auth_web_service.dart';
-import 'package:readly/features/bottom%20navigation/library/library/data/library_web_service.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_api/data/search_repository.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_api/data/search_web_service.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/data/search_details_repository.dart';
-import 'package:readly/features/bottom%20navigation/library/search_book_details_api/data/search_details_web_service.dart';
+import 'package:readly/features/readly/library/library/data/library_web_service.dart';
+import 'package:readly/features/readly/library/search_book_api/data/search_repository.dart';
+import 'package:readly/features/readly/library/search_book_api/data/search_web_service.dart';
+import 'package:readly/features/readly/library/search_book_details_api/data/search_details_repository.dart';
+import 'package:readly/features/readly/library/search_book_details_api/data/search_details_web_service.dart';
 import 'package:readly/features/onboarding/data/onboarding_repository.dart';
 import 'package:readly/features/splash/data/splash_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:readly/features/bottom%20navigation/library/library/data/library_repository.dart';
+import 'package:readly/features/readly/library/library/data/library_repository.dart';
 
 //library api search
 final searchWebService = SearchWebService(DioClient.dio);

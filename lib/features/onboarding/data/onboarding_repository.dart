@@ -20,7 +20,7 @@ class OnboardingRepository {
         image: AppAssets.onboarding2,
         title: 'Never lose a great line\nas you read',
         description:
-            "Save quotes and jot down your thoughts as you read, so your favorite moments are always there when you need them.",
+            "Save your thoughts as you read, so your favorite moments are always there when you need them.",
       ),
 
       OnboardingModel(

@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/dependency_injection/repositories.dart';
 import 'package:readly/core/routing/app_router.dart';
 import 'package:readly/firebase_options.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +14,6 @@ Future<void> main() async {
     );
     debugPrint("Firebase initialized!");
     await initializeDependencies();
-    await Supabase.initialize(
-      url: 'https://tossvccyqnfclvtiymal.supabase.co',
-      publishableKey: 'sb_publishable_pvGHgEq4nZDgwv9tQ6GbsA_SHqUOHcc',
-    );
-    debugPrint("Supabase initialized!");
   } on FirebaseException catch (e) {
     debugPrint('Firebase initialization failed: ${e.message}');
     rethrow;
