@@ -20,4 +20,9 @@ class Routes {
 
   static const String library = '/library';
   static const String viewBook = '/viewBook';
+
+  static const String notes = '/notes';
+  static const String profile = '/profile';
+  static const String home = '/home';
+
 }

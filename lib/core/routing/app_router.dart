@@ -9,6 +9,7 @@ import 'package:readly/features/auth/presentation/pages/congratulation.dart';
 import 'package:readly/features/auth/presentation/pages/login_page.dart';
 import 'package:readly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:readly/features/auth/presentation/pages/forgot_password.dart';
+import 'package:readly/features/readly/home/presentation/home_screen.dart';
 import 'package:readly/features/readly/library/add_manually/business_logic/book_form_cubit.dart';
 import 'package:readly/features/readly/library/add_manually/presentation/pages/add_book_manually_screen.dart';
 import 'package:readly/features/readly/library/library/business_logic/library_cubit.dart';
@@ -22,80 +23,100 @@ import 'package:readly/features/readly/library/search_book_details_api/business%
 import 'package:readly/features/readly/library/search_book_details_api/presentation/pages/search_details_screen.dart';
 import 'package:readly/features/onboarding/business_logic/onboarding_cubit.dart';
 import 'package:readly/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:readly/features/readly/notes/presentation/pages/notes_screen.dart';
+import 'package:readly/features/readly/profile/presentation/pages/profile_screen.dart';
 import 'package:readly/features/splash/business_logic/splash_cubit.dart';
 import 'package:readly/features/splash/presentation/splash_page.dart';
+import 'package:readly/features/readly/presentation/pages/readly_shell_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   routes: [
-    // ---------------------------------------------------------
-    // LIBRARY FLOW
-    // ---------------------------------------------------------
     ShellRoute(
       builder: (context, state, child) {
-        return BlocProvider(
-          create: (_) => LibraryCubit(libraryRepository)..fetchUserBooks(),
-          child: child,
-        );
+        return ReadlyShellScreen(child: child, location: state.uri.path);
       },
       routes: [
         GoRoute(
-          path: Routes.library,
+          path: Routes.home,
           builder: (context, state) {
-            return const LibraryScreen();
+            return const HomeScreen();
           },
         ),
 
-        GoRoute(
-          path: Routes.search,
-          builder: (context, state) {
+        ShellRoute(
+          builder: (context, state, child) {
             return BlocProvider(
-              create: (_) => SearchCubit(searchRepository),
-              child: const SearchScreen(),
+              create: (_) => LibraryCubit(libraryRepository)..fetchUserBooks(),
+              child: child,
             );
+          },
+          routes: [
+            GoRoute(
+              path: Routes.library,
+              builder: (context, state) {
+                return const LibraryScreen();
+              },
+            ),
+
+            GoRoute(
+              path: Routes.search,
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (_) => SearchCubit(searchRepository),
+                  child: const SearchScreen(),
+                );
+              },
+            ),
+
+            GoRoute(
+              path: Routes.searchDetails,
+              builder: (context, state) {
+                final basicInfo = state.extra as SearchModel;
+
+                return BlocProvider(
+                  create: (_) => SearchDetailsCubit(searchDetailsRepository),
+                  child: SearchDetailsScreen(basicInfo: basicInfo),
+                );
+              },
+            ),
+
+            GoRoute(
+              path: Routes.addBookManually,
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (_) => BookFormCubit(),
+                  child: const AddBookManuallyScreen(),
+                );
+              },
+            ),
+
+            GoRoute(
+              path: Routes.viewBook,
+              builder: (context, state) {
+                final book = state.extra as LibraryBook;
+
+                return BookViewScreen(book: book);
+              },
+            ),
+          ],
+        ),
+
+        GoRoute(
+          path: Routes.notes,
+          builder: (context, state) {
+            return const NotesScreen();
           },
         ),
 
         GoRoute(
-          path: Routes.searchDetails,
+          path: Routes.profile,
           builder: (context, state) {
-            final basicInfo = state.extra as SearchModel;
-
-            return BlocProvider(
-              create: (_) =>
-                  SearchDetailsCubit(searchDetailsRepository),
-              child: SearchDetailsScreen(
-                basicInfo: basicInfo,
-              ),
-            );
-          },
-        ),
-
-        GoRoute(
-          path: Routes.addBookManually,
-          builder: (context, state) {
-            return BlocProvider(
-              create: (_) => BookFormCubit(),
-              child: const AddBookManuallyScreen(),
-            );
-          },
-        ),
-
-        GoRoute(
-          path: Routes.viewBook,
-          builder: (context, state) {
-            final book = state.extra as LibraryBook;
-
-            return BookViewScreen(
-              book: book,
-            );
+            return const ProfileScreen();
           },
         ),
       ],
     ),
 
-    // ---------------------------------------------------------
-    // AUTH
-    // ---------------------------------------------------------
     GoRoute(
       path: Routes.login,
       builder: (context, state) {
@@ -133,9 +154,7 @@ final GoRouter appRouter = GoRouter(
 
         return BlocProvider(
           create: (_) => AuthCubit(authRepository),
-          child: CheckEmailPassword(
-            email: email,
-          ),
+          child: CheckEmailPassword(email: email),
         );
       },
     ),
@@ -147,9 +166,7 @@ final GoRouter appRouter = GoRouter(
 
         return BlocProvider(
           create: (_) => AuthCubit(authRepository),
-          child: CheckEmailVerification(
-            email: email,
-          ),
+          child: CheckEmailVerification(email: email),
         );
       },
     ),

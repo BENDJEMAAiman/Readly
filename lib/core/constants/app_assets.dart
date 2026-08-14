@@ -14,6 +14,16 @@ class AppAssets {
   static const noteIcon = 'assets/noteIcon.png';
   static const counterIcon = 'assets/counterIcon.png';
 
-  
+  //bottom navigation
+
+  static const homeBlue = 'assets/homeBlue.png';
+  static const libraryBlue = 'assets/libraryBlue.png';
+  static const notesBlue = 'assets/notesBlue.png';
+  static const profileBlue = 'assets/profileBlue.png';
+
+  static const homeGrey = 'assets/homeGrey.png';
+  static const libraryGrey = 'assets/libraryGrey.png';
+  static const notesGrey = 'assets/notesGrey.png';
+  static const profileGrey = 'assets/profileGrey.png';
  
 }
