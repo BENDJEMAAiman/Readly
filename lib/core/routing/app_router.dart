@@ -24,6 +24,7 @@ import 'package:readly/features/readly/library/search_book_details_api/presentat
 import 'package:readly/features/onboarding/business_logic/onboarding_cubit.dart';
 import 'package:readly/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:readly/features/readly/notes/business_logic/notes_cubit.dart';
+import 'package:readly/features/readly/notes/presentation/new_reading_note_args.dart';
 import 'package:readly/features/readly/notes/presentation/pages/new_reading_note_screen.dart';
 import 'package:readly/features/readly/notes/presentation/pages/notes_screen.dart';
 import 'package:readly/features/readly/profile/presentation/pages/profile_screen.dart';
@@ -213,15 +214,21 @@ final GoRouter appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: Routes.newReadingNote,
-      builder: (context, state) {
-        final book = state.extra as LibraryBook;
+  path: Routes.newReadingNote,
+  builder: (context, state) {
+    final args = state.extra as NewReadingNoteArgs;
 
-        return BlocProvider(
-          create: (context) => NotesCubit(notesRepository, libraryRepository),
-          child: NewReadingNoteScreen(book: book),
-        );
-      },
-    ),
+    return BlocProvider(
+      create: (context) => NotesCubit(
+        notesRepository,
+        libraryRepository,
+      ),
+      child: NewReadingNoteScreen(
+        book: args.book,
+        note: args.note,
+      ),
+    );
+  },
+),
   ],
 );

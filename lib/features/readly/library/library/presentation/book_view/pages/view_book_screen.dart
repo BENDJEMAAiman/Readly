@@ -10,6 +10,7 @@ import 'package:readly/features/readly/library/library/presentation/book_view/wi
 import 'package:readly/features/readly/library/library/presentation/book_view/widgets/reading_button.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
 import 'package:readly/features/readly/library/library/presentation/book_view/widgets/genre_section.dart';
+import 'package:readly/features/readly/notes/presentation/new_reading_note_args.dart';
 
 class BookViewScreen extends StatelessWidget {
   final LibraryBook book;
@@ -53,11 +54,12 @@ class BookViewScreen extends StatelessWidget {
                   coverId: book.coverId,
                   onCounterPressed: () {
                     //Open reading counter/session history.
-                    context.push(Routes.newReadingNote, extra: book);
+                    context.push(
+                      Routes.newReadingNote,
+                      extra: NewReadingNoteArgs(book: book),
+                    );
                   },
-                  onNotesPressed: () {
-                    
-                  },
+                  onNotesPressed: () {},
                 ),
 
                 SizedBox(height: 24.h),

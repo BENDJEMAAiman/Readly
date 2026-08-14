@@ -7,6 +7,7 @@ import 'package:readly/core/theme/app_text_styles.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
 import 'package:readly/features/readly/notes/business_logic/notes_cubit.dart';
 import 'package:readly/features/readly/notes/business_logic/notes_state.dart';
+import 'package:readly/features/readly/notes/model/note_entity.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/new_note_book_card.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/new_note_top_bar.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/note_content_field.dart';
@@ -14,9 +15,10 @@ import 'package:readly/features/readly/notes/presentation/widgets/note_editor_to
 import 'package:readly/features/readly/notes/presentation/widgets/note_title_field.dart';
 
 class NewReadingNoteScreen extends StatefulWidget {
-  const NewReadingNoteScreen({super.key, required this.book});
+  const NewReadingNoteScreen({super.key, required this.book, this.note});
 
   final LibraryBook book;
+  final NoteEntity? note;
 
   @override
   State<NewReadingNoteScreen> createState() => _NewReadingNoteScreenState();
@@ -34,8 +36,11 @@ class _NewReadingNoteScreenState extends State<NewReadingNoteScreen> {
   void initState() {
     super.initState();
 
-    _titleController = TextEditingController();
-    _contentController = TextEditingController();
+    _titleController = TextEditingController(text: widget.note?.title ?? '');
+
+    _contentController = TextEditingController(
+      text: widget.note?.content ?? '',
+    );
   }
 
   @override
@@ -44,6 +49,97 @@ class _NewReadingNoteScreenState extends State<NewReadingNoteScreen> {
     _contentController.dispose();
     _contentFocusNode.dispose();
     super.dispose();
+  }
+
+  bool _hasUnsavedChanges() {
+    final currentTitle = _titleController.text.trim();
+    final currentContent = _contentController.text.trim();
+
+    // Creating a new note
+    if (widget.note == null) {
+      return currentTitle.isNotEmpty || currentContent.isNotEmpty;
+    }
+
+    // Editing an existing note
+    return currentTitle != widget.note!.title ||
+        currentContent != widget.note!.content;
+  }
+
+  Future<bool> _showDiscardDialog() async {
+    final shouldLeave = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return AlertDialog(
+          backgroundColor: AppColors.white,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          title: Text(
+            'Leave without saving?',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.buttonBlueDark,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: Text(
+            'Do you want to leave without saving your note?',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.grey500,
+              height: 1.5,
+            ),
+          ),
+          actionsPadding: EdgeInsets.zero,
+          actions: [
+            SizedBox(
+              height: 52.h,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop(false);
+                      },
+                      child: Text(
+                        'No',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.buttonBlueDark,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 1.w,
+                    height: 52.h,
+                    color: AppColors.buttonBlueDark.withValues(alpha: 0.25),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop(true);
+                      },
+                      child: Text(
+                        'Yes',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.buttonBlueDark,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    return shouldLeave ?? false;
   }
 
   Future<void> _saveNote() async {
@@ -69,12 +165,26 @@ class _NewReadingNoteScreenState extends State<NewReadingNoteScreen> {
       _isSaving = true;
     });
 
-    await context.read<NotesCubit>().addNote(
-      bookId: widget.book.id!,
-      title: title,
-      content: content,
-      pageNumber: widget.book.currentPage,
-    );
+    final notesCubit = context.read<NotesCubit>();
+
+    if (widget.note == null) {
+      // CREATE NEW NOTE
+      await notesCubit.addNote(
+        bookId: widget.book.id!,
+        title: title,
+        content: content,
+        pageNumber: widget.book.currentPage,
+      );
+    } else {
+      // UPDATE EXISTING NOTE
+      final updatedNote = widget.note!.copyWith(
+        title: title,
+        content: content,
+        updatedAt: DateTime.now(),
+      );
+
+      await notesCubit.updateNote(updatedNote);
+    }
 
     if (!mounted) {
       return;
@@ -91,7 +201,7 @@ class _NewReadingNoteScreenState extends State<NewReadingNoteScreen> {
       return;
     }
 
-    context.pop();
+    context.pop(true);
   }
 
   void _showMessage(String message) {
@@ -105,8 +215,19 @@ class _NewReadingNoteScreenState extends State<NewReadingNoteScreen> {
     );
   }
 
-  void _close() {
+  Future<void> _close() async {
     if (_isSaving) {
+      return;
+    }
+
+    if (!_hasUnsavedChanges()) {
+      context.pop();
+      return;
+    }
+
+    final shouldLeave = await _showDiscardDialog();
+
+    if (!mounted || !shouldLeave) {
       return;
     }
 

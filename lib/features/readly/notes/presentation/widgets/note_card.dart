@@ -11,12 +11,13 @@ class NoteCard extends StatelessWidget {
     required this.note,
     required this.book,
     this.onTap,
-    
+    required this.onDelete,
   });
 
   final NoteEntity note;
   final LibraryBook book;
   final VoidCallback? onTap;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +29,7 @@ class NoteCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 14.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(20.r),
@@ -62,7 +60,7 @@ class NoteCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.buttonBlue,
+                        color: AppColors.buttonBlueDark,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -90,6 +88,32 @@ class NoteCard extends StatelessWidget {
                   height: 1.45,
                 ),
               ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onDelete,
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Container(
+                        width: 34.w,
+                        height: 34.h,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF1F1),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Icon(
+                          Icons.delete_outline_rounded,
+                          size: 19.sp,
+                          color: const Color(0xFFD98282),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -116,3 +140,6 @@ class NoteCard extends StatelessWidget {
     return '${months[date.month - 1]} ${date.day}';
   }
 }
+
+
+
