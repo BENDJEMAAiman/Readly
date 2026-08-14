@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:readly/core/routing/routes.dart';
 import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/features/readly/library/library/presentation/book_view/widgets/about_book_section.dart';
 import 'package:readly/features/readly/library/library/presentation/book_view/widgets/book_cover_section.dart';
@@ -51,9 +53,10 @@ class BookViewScreen extends StatelessWidget {
                   coverId: book.coverId,
                   onCounterPressed: () {
                     //Open reading counter/session history.
+                    context.push(Routes.newReadingNote, extra: book);
                   },
                   onNotesPressed: () {
-                    //Open notes for this book.
+                    
                   },
                 ),
 

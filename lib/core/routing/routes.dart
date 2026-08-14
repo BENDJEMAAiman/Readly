@@ -22,7 +22,10 @@ class Routes {
   static const String viewBook = '/viewBook';
 
   static const String notes = '/notes';
+  static const String newReadingNote = '/new-reading-note';
   static const String profile = '/profile';
   static const String home = '/home';
+
+  
 
 }

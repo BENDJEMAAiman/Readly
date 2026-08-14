@@ -11,6 +11,8 @@ import 'package:readly/features/readly/library/search_book_api/data/search_web_s
 import 'package:readly/features/readly/library/search_book_details_api/data/search_details_repository.dart';
 import 'package:readly/features/readly/library/search_book_details_api/data/search_details_web_service.dart';
 import 'package:readly/features/onboarding/data/onboarding_repository.dart';
+import 'package:readly/features/readly/notes/data/notes_repository.dart';
+import 'package:readly/features/readly/notes/data/notes_web_service.dart';
 import 'package:readly/features/splash/data/splash_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:readly/features/readly/library/library/data/library_repository.dart';
@@ -42,18 +44,20 @@ late OnboardingRepository onboardingRepository;
 
 final firebaseFirestore = FirebaseFirestore.instance;
 
-
 final libraryWebService = LibraryWebService(
   FirebaseFirestore.instance,
   CloudinaryService(),
   FirebaseAuth.instance,
 );
 
-final libraryRepository = LibraryRepository(
-  libraryWebService,
+final libraryRepository = LibraryRepository(libraryWebService);
+
+final notesWebService = NotesWebService(
+  FirebaseFirestore.instance,
+  FirebaseAuth.instance,
 );
 
-
+final notesRepository = NotesRepository(notesWebService);
 
 Future<void> initializeDependencies() async {
   sharedPreferences = await SharedPreferences.getInstance();
