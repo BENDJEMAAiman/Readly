@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/theme/app_colors.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/notes_header.dart';
-import 'package:readly/features/readly/notes/presentation/widgets/notes_search_field.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({super.key});
