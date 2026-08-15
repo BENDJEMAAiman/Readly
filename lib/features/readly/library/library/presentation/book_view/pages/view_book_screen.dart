@@ -53,13 +53,14 @@ class BookViewScreen extends StatelessWidget {
                   coverImageUrl: book.coverImageUrl,
                   coverId: book.coverId,
                   onCounterPressed: () {
-                    //Open reading counter/session history.
                     context.push(
                       Routes.newReadingNote,
                       extra: NewReadingNoteArgs(book: book),
                     );
                   },
-                  onNotesPressed: () {},
+                  onNotesPressed: () {
+                    context.push(Routes.readingSession, extra: book);
+                  },
                 ),
 
                 SizedBox(height: 24.h),
@@ -93,7 +94,7 @@ class BookViewScreen extends StatelessWidget {
                       // Start Reading
                       ReadingButton(
                         onPressed: () {
-                          //Start/continue reading.
+                          context.push(Routes.readingSession, extra: book);
                         },
                       ),
 

@@ -5,6 +5,8 @@ import 'package:readly/core/network/dio_client.dart';
 import 'package:readly/core/network/cloudinary_service.dart';
 import 'package:readly/features/auth/data/auth_repository.dart';
 import 'package:readly/features/auth/data/auth_web_service.dart';
+import 'package:readly/features/reading_session/data/reading_session_repository.dart';
+import 'package:readly/features/reading_session/data/reading_session_web_service.dart';
 import 'package:readly/features/readly/library/library/data/library_web_service.dart';
 import 'package:readly/features/readly/library/search_book_api/data/search_repository.dart';
 import 'package:readly/features/readly/library/search_book_api/data/search_web_service.dart';
@@ -52,12 +54,17 @@ final libraryWebService = LibraryWebService(
 
 final libraryRepository = LibraryRepository(libraryWebService);
 
+//notes
 final notesWebService = NotesWebService(
   FirebaseFirestore.instance,
   FirebaseAuth.instance,
 );
-
 final notesRepository = NotesRepository(notesWebService);
+
+//reading session
+final readingSessionWebService = ReadingSessionWebService(FirebaseFirestore.instance, FirebaseAuth.instance);
+final readingSessionRepository = ReadingSessionRepository(readingSessionWebService);
+
 
 Future<void> initializeDependencies() async {
   sharedPreferences = await SharedPreferences.getInstance();
