@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readly/features/reading_session/business_logic/reading_session_state.dart';
 import 'package:readly/features/reading_session/data/reading_session_repository.dart';
-import 'package:readly/features/readly/library/library/data/library_repository.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
 
 class ReadingSessionCubit extends Cubit<ReadingSessionState> {
   final ReadingSessionRepository readingSessionRepository;
-  final LibraryRepository libraryRepository;
 
-  ReadingSessionCubit(this.readingSessionRepository, this.libraryRepository)
+  ReadingSessionCubit(this.readingSessionRepository)
     : super(const SessionIdle());
 
   Timer? _timer;
@@ -118,7 +116,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
 
     try {
       // ----------------------------------------------------------
-      // 1. Calculate the new current page
+      // 1. Validate the book
       // ----------------------------------------------------------
 
       final totalPages = book.pages;
@@ -132,6 +130,10 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
         return;
       }
 
+      // ----------------------------------------------------------
+      // 2. Calculate the new current page
+      // ----------------------------------------------------------
+
       final newCurrentPage = book.currentPage + pagesRead;
 
       final updatedCurrentPage = newCurrentPage >= totalPages
@@ -141,31 +143,36 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
       final reachedEnd = updatedCurrentPage >= totalPages;
 
       // ----------------------------------------------------------
-      // 4. Update the book
+      // 3. Calculate the new reading status
       // ----------------------------------------------------------
 
       final newReadingStatus = reachedEnd
           ? ReadingStatus.completed
           : ReadingStatus.reading;
 
+      // ----------------------------------------------------------
+      // 4. Create the updated book
+      // ----------------------------------------------------------
+
       final updatedBook = book.copyWith(
         currentPage: updatedCurrentPage,
         readingStatus: newReadingStatus,
       );
 
-      await libraryRepository.updateBook(updatedBook);
-
       // ----------------------------------------------------------
-      // 5. Save the reading session
+      // 5. Save book + reading session atomically
       // ----------------------------------------------------------
 
-      final session = await readingSessionRepository.addReadingSession(
-        bookId: book.id!,
-        startedAt: startedAt,
-        endedAt: DateTime.now(),
-        durationSeconds: _durationSeconds,
-        pagesRead: pagesRead,
-      );
+      final endedAt = DateTime.now();
+
+      final session = await readingSessionRepository
+          .saveCompletedReadingSession(
+            updatedBook: updatedBook,
+            startedAt: startedAt,
+            endedAt: endedAt,
+            durationSeconds: _durationSeconds,
+            pagesRead: pagesRead,
+          );
 
       // ----------------------------------------------------------
       // 6. Tell the UI that everything succeeded

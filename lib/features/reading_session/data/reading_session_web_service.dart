@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:readly/features/readly/library/library/model/library_book.dart';
 import '../model/reading_session.dart';
 
 class ReadingSessionWebService {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
 
-  ReadingSessionWebService(
-    this.firestore,
-    this.auth,
-  );
+  ReadingSessionWebService(this.firestore, this.auth);
 
   String _getCurrentUserId() {
     final user = auth.currentUser;
@@ -21,51 +18,6 @@ class ReadingSessionWebService {
 
     return user.uid;
   }
-
-  Future<ReadingSession> addReadingSession({
-  required String bookId,
-  required DateTime startedAt,
-  required DateTime endedAt,
-  required int durationSeconds,
-  required int pagesRead,
-}) async {
-  try {
-    final uid = _getCurrentUserId();
-
-    final sessionsCollection = firestore
-        .collection('users')
-        .doc(uid)
-        .collection('books')
-        .doc(bookId)
-        .collection('reading_sessions');
-
-    // Firestore generates the document ID.
-    final sessionDocument = sessionsCollection.doc();
-
-    final session = ReadingSession(
-      sessionId: sessionDocument.id,
-      bookId: bookId,
-      startedAt: startedAt,
-      endedAt: endedAt,
-      durationSeconds: durationSeconds,
-      pagesRead: pagesRead,
-    );
-
-    await sessionDocument.set({
-      'bookId': session.bookId,
-      'startedAt': Timestamp.fromDate(session.startedAt),
-      'endedAt': Timestamp.fromDate(session.endedAt),
-      'durationSeconds': session.durationSeconds,
-      'pagesRead': session.pagesRead,
-    });
-
-    return session;
-  } catch (e) {
-    throw Exception(
-      'Failed to save reading session: $e',
-    );
-  }
-}
 
   Future<List<ReadingSession>> fetchReadingSessionsForBook(
     String bookId,
@@ -83,14 +35,66 @@ class ReadingSessionWebService {
           .get();
 
       return snapshot.docs
-          .map(
-            (doc) => ReadingSession.fromFirestore(doc),
-          )
+          .map((doc) => ReadingSession.fromFirestore(doc))
           .toList();
     } catch (e) {
-      throw Exception(
-        'Failed to fetch reading sessions: $e',
+      throw Exception('Failed to fetch reading sessions: $e');
+    }
+  }
+
+  Future<ReadingSession> saveCompletedReadingSession({
+    required LibraryBook updatedBook,
+    required DateTime startedAt,
+    required DateTime endedAt,
+    required int durationSeconds,
+    required int pagesRead,
+  }) async {
+    try {
+      final uid = _getCurrentUserId();
+
+      if (updatedBook.id == null || updatedBook.id!.isEmpty) {
+        throw Exception('Cannot save session for a book without an ID.');
+      }
+
+      final bookReference = firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .doc(updatedBook.id);
+
+      final sessionReference = bookReference
+          .collection('reading_sessions')
+          .doc();
+
+      final session = ReadingSession(
+        sessionId: sessionReference.id,
+        bookId: updatedBook.id!,
+        startedAt: startedAt,
+        endedAt: endedAt,
+        durationSeconds: durationSeconds,
+        pagesRead: pagesRead,
       );
+
+      final batch = firestore.batch();
+
+      // 1. Update the book.
+      batch.update(bookReference, updatedBook.toMap());
+
+      // 2. Create the reading session.
+      batch.set(sessionReference, {
+        'bookId': session.bookId,
+        'startedAt': Timestamp.fromDate(session.startedAt),
+        'endedAt': Timestamp.fromDate(session.endedAt),
+        'durationSeconds': session.durationSeconds,
+        'pagesRead': session.pagesRead,
+      });
+
+      // 3. Commit both operations together.
+      await batch.commit();
+
+      return session;
+    } catch (e) {
+      throw Exception('Failed to save completed reading session: $e');
     }
   }
 }

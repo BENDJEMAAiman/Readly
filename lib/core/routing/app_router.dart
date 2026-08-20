@@ -233,8 +233,7 @@ final GoRouter appRouter = GoRouter(
         final book = state.extra as LibraryBook;
 
         return BlocProvider(
-          create: (context) =>
-              ReadingSessionCubit(readingSessionRepository, libraryRepository),
+          create: (context) => ReadingSessionCubit(readingSessionRepository),
           child: ReadingSessionScreen(book: book),
         );
       },

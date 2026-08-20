@@ -57,7 +57,7 @@ class BookCompletedDialog extends StatelessWidget {
           SizedBox(height: 8.h),
 
           Text(
-            'You finished "$bookTitle". Great job!',
+            'You finished. Great job!',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.grey500,

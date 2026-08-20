@@ -137,11 +137,11 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
               return;
             }
 
-            context.pop();
+            context.pop(state.book);
             return;
           }
 
-          context.pop();
+          context.pop(state.book);
         }
 
         if (state is SessionError) {

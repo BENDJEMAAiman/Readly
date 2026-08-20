@@ -25,9 +25,7 @@ class LibraryCubit extends Cubit<LibraryState> {
         ),
       );
     } catch (e) {
-      emit(
-        LibraryError(e.toString()),
-      );
+      emit(LibraryError(e.toString()));
     }
   }
 
@@ -43,22 +41,17 @@ class LibraryCubit extends Cubit<LibraryState> {
         return;
       }
 
-      final updatedBooks = [
-        ...currentState.books,
-        savedBook,
-      ];
+      final updatedBooks = [...currentState.books, savedBook];
 
       final query = currentState.searchQuery;
       final selectedStatus = currentState.selectedStatus;
 
       final filteredBooks = updatedBooks.where((book) {
         final matchesSearch =
-            query.isEmpty ||
-            book.title.trim().toLowerCase().contains(query);
+            query.isEmpty || book.title.trim().toLowerCase().contains(query);
 
         final matchesStatus =
-            selectedStatus == null ||
-            book.readingStatus == selectedStatus;
+            selectedStatus == null || book.readingStatus == selectedStatus;
 
         return matchesSearch && matchesStatus;
       }).toList();
@@ -72,9 +65,7 @@ class LibraryCubit extends Cubit<LibraryState> {
         ),
       );
     } catch (e) {
-      emit(
-        LibraryError(e.toString()),
-      );
+      emit(LibraryError(e.toString()));
     }
   }
 
@@ -82,10 +73,7 @@ class LibraryCubit extends Cubit<LibraryState> {
   ///
   /// This will be especially useful when the reading-session
   /// feature is implemented later.
-  Future<void> updateBookProgress(
-    String bookId,
-    int currentPage,
-  ) async {
+  Future<void> updateBookProgress(String bookId, int currentPage) async {
     try {
       final currentState = state;
 
@@ -103,15 +91,11 @@ class LibraryCubit extends Cubit<LibraryState> {
 
       final book = currentState.books[bookIndex];
 
-      final updatedBook = book.copyWith(
-        currentPage: currentPage,
-      );
+      final updatedBook = book.copyWith(currentPage: currentPage);
 
       await repository.updateBook(updatedBook);
 
-      final updatedBooks = [
-        ...currentState.books,
-      ];
+      final updatedBooks = [...currentState.books];
 
       updatedBooks[bookIndex] = updatedBook;
 
@@ -120,12 +104,10 @@ class LibraryCubit extends Cubit<LibraryState> {
 
       final filteredBooks = updatedBooks.where((book) {
         final matchesSearch =
-            query.isEmpty ||
-            book.title.trim().toLowerCase().contains(query);
+            query.isEmpty || book.title.trim().toLowerCase().contains(query);
 
         final matchesStatus =
-            selectedStatus == null ||
-            book.readingStatus == selectedStatus;
+            selectedStatus == null || book.readingStatus == selectedStatus;
 
         return matchesSearch && matchesStatus;
       }).toList();
@@ -139,17 +121,12 @@ class LibraryCubit extends Cubit<LibraryState> {
         ),
       );
     } catch (e) {
-      emit(
-        LibraryError(e.toString()),
-      );
+      emit(LibraryError(e.toString()));
     }
   }
 
   /// Changes the reading status of a book.
-  Future<void> changeBookStatus(
-    String bookId,
-    ReadingStatus status,
-  ) async {
+  Future<void> changeBookStatus(String bookId, ReadingStatus status) async {
     try {
       final currentState = state;
 
@@ -167,15 +144,11 @@ class LibraryCubit extends Cubit<LibraryState> {
 
       final book = currentState.books[bookIndex];
 
-      final updatedBook = book.copyWith(
-        readingStatus: status,
-      );
+      final updatedBook = book.copyWith(readingStatus: status);
 
       await repository.updateBook(updatedBook);
 
-      final updatedBooks = [
-        ...currentState.books,
-      ];
+      final updatedBooks = [...currentState.books];
 
       updatedBooks[bookIndex] = updatedBook;
 
@@ -184,12 +157,10 @@ class LibraryCubit extends Cubit<LibraryState> {
 
       final filteredBooks = updatedBooks.where((book) {
         final matchesSearch =
-            query.isEmpty ||
-            book.title.trim().toLowerCase().contains(query);
+            query.isEmpty || book.title.trim().toLowerCase().contains(query);
 
         final matchesStatus =
-            selectedStatus == null ||
-            book.readingStatus == selectedStatus;
+            selectedStatus == null || book.readingStatus == selectedStatus;
 
         return matchesSearch && matchesStatus;
       }).toList();
@@ -203,9 +174,7 @@ class LibraryCubit extends Cubit<LibraryState> {
         ),
       );
     } catch (e) {
-      emit(
-        LibraryError(e.toString()),
-      );
+      emit(LibraryError(e.toString()));
     }
   }
 
@@ -221,9 +190,7 @@ class LibraryCubit extends Cubit<LibraryState> {
       await repository.deleteBook(bookId);
 
       final updatedBooks = currentState.books
-          .where(
-            (book) => book.id != bookId,
-          )
+          .where((book) => book.id != bookId)
           .toList();
 
       final query = currentState.searchQuery;
@@ -231,12 +198,10 @@ class LibraryCubit extends Cubit<LibraryState> {
 
       final filteredBooks = updatedBooks.where((book) {
         final matchesSearch =
-            query.isEmpty ||
-            book.title.trim().toLowerCase().contains(query);
+            query.isEmpty || book.title.trim().toLowerCase().contains(query);
 
         final matchesStatus =
-            selectedStatus == null ||
-            book.readingStatus == selectedStatus;
+            selectedStatus == null || book.readingStatus == selectedStatus;
 
         return matchesSearch && matchesStatus;
       }).toList();
@@ -250,9 +215,7 @@ class LibraryCubit extends Cubit<LibraryState> {
         ),
       );
     } catch (e) {
-      emit(
-        LibraryError(e.toString()),
-      );
+      emit(LibraryError(e.toString()));
     }
   }
 
@@ -277,8 +240,7 @@ class LibraryCubit extends Cubit<LibraryState> {
           book.title.trim().toLowerCase().contains(normalizedQuery);
 
       final matchesStatus =
-          selectedStatus == null ||
-          book.readingStatus == selectedStatus;
+          selectedStatus == null || book.readingStatus == selectedStatus;
 
       return matchesSearch && matchesStatus;
     }).toList();
@@ -310,12 +272,9 @@ class LibraryCubit extends Cubit<LibraryState> {
 
     final filteredBooks = currentState.books.where((book) {
       final matchesSearch =
-          query.isEmpty ||
-          book.title.trim().toLowerCase().contains(query);
+          query.isEmpty || book.title.trim().toLowerCase().contains(query);
 
-      final matchesStatus =
-          status == null ||
-          book.readingStatus == status;
+      final matchesStatus = status == null || book.readingStatus == status;
 
       return matchesSearch && matchesStatus;
     }).toList();
@@ -329,4 +288,114 @@ class LibraryCubit extends Cubit<LibraryState> {
       ),
     );
   }
+
+  void updateBookLocally(LibraryBook updatedBook) {
+    final currentState = state;
+
+    if (currentState is! LibraryLoaded) {
+      return;
+    }
+
+    final updatedBooks = currentState.books.map((book) {
+      if (book.id == updatedBook.id) {
+        return updatedBook;
+      }
+
+      return book;
+    }).toList();
+
+    final query = currentState.searchQuery;
+    final selectedStatus = currentState.selectedStatus;
+
+    final filteredBooks = updatedBooks.where((book) {
+      final matchesSearch =
+          query.isEmpty || book.title.trim().toLowerCase().contains(query);
+
+      final matchesStatus =
+          selectedStatus == null || book.readingStatus == selectedStatus;
+
+      return matchesSearch && matchesStatus;
+    }).toList();
+
+    emit(
+      LibraryLoaded(
+        books: updatedBooks,
+        filteredBooks: filteredBooks,
+        searchQuery: query,
+        selectedStatus: selectedStatus,
+      ),
+    );
+  }
+
+
+  Future<LibraryBook?> resetBookForRereading(String bookId) async {
+  try {
+    final currentState = state;
+
+    if (currentState is! LibraryLoaded) {
+      return null;
+    }
+
+    final bookIndex = currentState.books.indexWhere(
+      (book) => book.id == bookId,
+    );
+
+    if (bookIndex == -1) {
+      return null;
+    }
+
+    final book = currentState.books[bookIndex];
+
+    // Safety check:
+    // this operation is only intended for completed books.
+    if (book.readingStatus != ReadingStatus.completed) {
+      return book;
+    }
+
+    final updatedBook = book.copyWith(
+      currentPage: 0,
+      readingStatus: ReadingStatus.reading,
+    );
+
+    await repository.updateBook(updatedBook);
+
+    final updatedBooks = [
+      ...currentState.books,
+    ];
+
+    updatedBooks[bookIndex] = updatedBook;
+
+    final query = currentState.searchQuery;
+    final selectedStatus = currentState.selectedStatus;
+
+    final filteredBooks = updatedBooks.where((book) {
+      final matchesSearch =
+          query.isEmpty ||
+          book.title.trim().toLowerCase().contains(query);
+
+      final matchesStatus =
+          selectedStatus == null ||
+          book.readingStatus == selectedStatus;
+
+      return matchesSearch && matchesStatus;
+    }).toList();
+
+    emit(
+      LibraryLoaded(
+        books: updatedBooks,
+        filteredBooks: filteredBooks,
+        searchQuery: query,
+        selectedStatus: selectedStatus,
+      ),
+    );
+
+    return updatedBook;
+  } catch (e) {
+    emit(
+      LibraryError(e.toString()),
+    );
+
+    return null;
+  }
+}
 }
