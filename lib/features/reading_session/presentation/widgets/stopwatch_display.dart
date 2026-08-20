@@ -29,8 +29,6 @@ class StopwatchDisplay extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 4.h),
-
         Text(
           isActive ? 'Reading...' : 'Pause...',
           style: AppTextStyles.bodyLarge.copyWith(

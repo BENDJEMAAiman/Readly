@@ -13,6 +13,8 @@ import 'package:readly/features/reading_session/presentation/widgets/session_boo
 import 'package:readly/features/reading_session/presentation/widgets/session_control_button.dart';
 import 'package:readly/features/reading_session/presentation/widgets/stopwatch_display.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
+import 'package:readly/core/routing/routes.dart';
+import 'package:readly/features/readly/notes/presentation/new_reading_note_args.dart';
 
 class ReadingSessionScreen extends StatefulWidget {
   const ReadingSessionScreen({super.key, required this.book});
@@ -157,57 +159,82 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
           final isActive = state is SessionActive;
           final isSaving = state is SessionSaving;
 
+          final foregroundColor = isActive
+              ? AppColors.white
+              : AppColors.grey600;
+
+          final stopwatchTextColor = isActive
+              ? AppColors.white
+              : AppColors.buttonBlueDark;
+
+          final finishBackgroundColor = isActive
+              ? AppColors.white.withValues(alpha: 0.25)
+              : AppColors.secondaryLight;
+
           return Scaffold(
-            backgroundColor: AppColors.background,
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 12.h,
-                    ),
-                    child: ReadingSessionTopBar(
-                      onClose: _handleClose,
-                      onFinish: _finishSession,
-                      foregroundColor: AppColors.primary,
-                      finishBackgroundColor: AppColors.secondaryLight,
-                      isSaving: isSaving,
-                    ),
-                  ),
-
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Column(
-                        children: [
-                          const Spacer(),
-
-                          StopwatchDisplay(
-                            durationSeconds: durationSeconds,
-                            isActive: isActive,
-                            textColor: AppColors.primary,
-                          ),
-
-                          SizedBox(height: 40.h),
-
-                          SessionControlButton(
-                            isActive: isActive,
-                            onPressed: () {
-                              _handleControlButton(context, state);
-                            },
-                          ),
-
-                          const Spacer(),
-
-                          SessionBookCard(book: widget.book),
-
-                          SizedBox(height: 24.h),
-                        ],
+            body: AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+              color: isActive
+                  ? const Color(0xFF7FABD8)
+                  : const Color(0xFFF8F5EF),
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 12.h,
+                      ),
+                      child: ReadingSessionTopBar(
+                        onClose: _handleClose,
+                        onFinish: _finishSession,
+                        foregroundColor: foregroundColor,
+                        finishBackgroundColor: finishBackgroundColor,
+                        isSaving: isSaving,
                       ),
                     ),
-                  ),
-                ],
+
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 30.h),
+
+                            StopwatchDisplay(
+                              durationSeconds: durationSeconds,
+                              isActive: isActive,
+                              textColor: stopwatchTextColor,
+                            ),
+
+                            SizedBox(height: 6.h),
+
+                            SessionControlButton(
+                              isActive: isActive,
+                              onPressed: () {
+                                _handleControlButton(context, state);
+                              },
+                            ),
+
+                            SizedBox(height: 140.h),
+
+                            SessionBookCard(
+                              book: widget.book,
+                              isActive: isActive,
+                              onNotesPressed: () async {
+                                await context.push(
+                                  Routes.newReadingNote,
+                                  extra: NewReadingNoteArgs(book: widget.book),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

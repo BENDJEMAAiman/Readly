@@ -13,8 +13,10 @@ class AppColors {
   static const Color secondaryLight2 = Color(0xFFEFF6FF);
 
   //neutral
-  static const grey500 = Color(0xFF9CA3AF);
+
   static const grey400 = Color(0xFFD1D5DB);
+  static const grey500 = Color(0xFF9CA3AF);
+  static const grey600 = Color(0xFF707880);
   static const textSecondary = Color(0xFF40484F);
 
   //basic
