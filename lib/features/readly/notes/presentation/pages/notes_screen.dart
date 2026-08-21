@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readly/core/theme/app_colors.dart';
+import 'package:readly/features/auth/business_logic/auth_cubit.dart';
+import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/readly/notes/business_logic/notes_cubit.dart';
 import 'package:readly/features/readly/notes/business_logic/notes_state.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/notes_empty_state.dart';
@@ -10,9 +12,7 @@ import 'package:readly/features/readly/notes/presentation/widgets/notes_list.dar
 import 'package:readly/features/readly/notes/presentation/widgets/notes_search_field.dart';
 
 class NotesScreen extends StatefulWidget {
-  const NotesScreen({
-    super.key,
-  });
+  const NotesScreen({super.key});
 
   @override
   State<NotesScreen> createState() => _NotesScreenState();
@@ -45,18 +45,27 @@ class _NotesScreenState extends State<NotesScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
 
-      
-
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 23.w,
-            vertical: 16.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const NotesHeader(),
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, authState) {
+                  ImageProvider? profileImage;
+
+                  if (authState is Authenticated) {
+                    final photoUrl = authState.user.photoUrl;
+
+                    if (photoUrl != null && photoUrl.isNotEmpty) {
+                      profileImage = NetworkImage(photoUrl);
+                    }
+                  }
+
+                  return NotesHeader(profileImage: profileImage);
+                },
+              ),
 
               SizedBox(height: 24.h),
 
@@ -71,17 +80,11 @@ class _NotesScreenState extends State<NotesScreen> {
                 child: BlocBuilder<NotesCubit, NotesState>(
                   builder: (context, state) {
                     if (state is NotesLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (state is NotesError) {
-                      return Center(
-                        child: Text(
-                          state.message,
-                        ),
-                      );
+                      return Center(child: Text(state.message));
                     }
 
                     if (state is NotesLoaded) {
@@ -89,10 +92,7 @@ class _NotesScreenState extends State<NotesScreen> {
                         return const NotesEmptyState();
                       }
 
-                      return NotesList(
-                        notes: state.notes,
-                        books: state.books,
-                      );
+                      return NotesList(notes: state.notes, books: state.books);
                     }
 
                     return const SizedBox.shrink();

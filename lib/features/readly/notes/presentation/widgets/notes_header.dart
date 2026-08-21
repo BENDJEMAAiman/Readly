@@ -43,7 +43,7 @@ class NotesHeader extends StatelessWidget {
             ),
 
             CircleAvatar(
-              radius: 16.r,
+              radius: 23.r,
               backgroundColor: AppColors.secondaryLight,
               backgroundImage: profileImage,
               child: profileImage == null

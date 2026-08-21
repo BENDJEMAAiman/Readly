@@ -103,4 +103,23 @@ class AuthWebService {
       rethrow;
     }
   }
+
+  Future<void> updatePhotoUrl(String photoUrl) async {
+    try {
+      await firebaseAuth.currentUser?.updatePhotoURL(photoUrl);
+
+      await firebaseAuth.currentUser?.reload();
+    } on FirebaseAuthException {
+      rethrow;
+    }
+  }
+
+  Future<void> deletePhotoUrl() async {
+    try {
+      await firebaseAuth.currentUser?.updatePhotoURL(null);
+      await firebaseAuth.currentUser?.reload();
+    } on FirebaseAuthException {
+      rethrow;
+    }
+  }
 }

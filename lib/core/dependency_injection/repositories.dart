@@ -48,9 +48,12 @@ late OnboardingRepository onboardingRepository;
 
 final firebaseFirestore = FirebaseFirestore.instance;
 
+// Cloudinary
+final cloudinaryService = CloudinaryService();
+
 final libraryWebService = LibraryWebService(
   FirebaseFirestore.instance,
-  CloudinaryService(),
+  cloudinaryService,
   FirebaseAuth.instance,
 );
 
@@ -64,12 +67,19 @@ final notesWebService = NotesWebService(
 final notesRepository = NotesRepository(notesWebService);
 
 //reading session
-final readingSessionWebService = ReadingSessionWebService(FirebaseFirestore.instance, FirebaseAuth.instance);
-final readingSessionRepository = ReadingSessionRepository(readingSessionWebService);
+final readingSessionWebService = ReadingSessionWebService(
+  FirebaseFirestore.instance,
+  FirebaseAuth.instance,
+);
+final readingSessionRepository = ReadingSessionRepository(
+  readingSessionWebService,
+);
 
-final profileWebService = ProfileWebService(FirebaseFirestore.instance, FirebaseAuth.instance);
+final profileWebService = ProfileWebService(
+  FirebaseFirestore.instance,
+  FirebaseAuth.instance,
+);
 final profileRepository = ProfileRepository(profileWebService);
-
 
 Future<void> initializeDependencies() async {
   sharedPreferences = await SharedPreferences.getInstance();

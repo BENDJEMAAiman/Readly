@@ -169,4 +169,30 @@ class AuthRepository {
       }
     }
   }
+
+  Future<void> updateProfilePhoto(String photoUrl) async {
+    try {
+      await authWebService.updatePhotoUrl(photoUrl);
+    } on FirebaseAuthException {
+      throw Exception('Failed to update profile picture.');
+    }
+  }
+
+  String getCurrentUserId() {
+    final user = authWebService.getCurrentUser();
+
+    if (user == null) {
+      throw Exception('No authenticated user found.');
+    }
+
+    return user.uid;
+  }
+
+  Future<void> deleteProfilePhoto() async {
+    try {
+      await authWebService.deletePhotoUrl();
+    } on FirebaseAuthException {
+      throw Exception('Failed to delete profile picture.');
+    }
+  }
 }

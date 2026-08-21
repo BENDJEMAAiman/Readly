@@ -60,7 +60,10 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: Routes.library,
               builder: (context, state) {
-                return const LibraryScreen();
+                return BlocProvider(
+                  create: (_) => AuthCubit(authRepository)..checkAuthStatus(),
+                  child: const LibraryScreen(),
+                );
               },
             ),
 
@@ -110,8 +113,16 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: Routes.notes,
           builder: (context, state) {
-            return BlocProvider(
-              create: (_) => NotesCubit(notesRepository, libraryRepository),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => NotesCubit(notesRepository, libraryRepository),
+                ),
+
+                BlocProvider(
+                  create: (_) => AuthCubit(authRepository)..checkAuthStatus(),
+                ),
+              ],
               child: const NotesScreen(),
             );
           },
@@ -123,8 +134,11 @@ final GoRouter appRouter = GoRouter(
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (_) =>
-                      ProfileCubit(profileRepository)..loadUserProfile(),
+                  create: (_) => ProfileCubit(
+                    profileRepository,
+                    cloudinaryService,
+                    authRepository,
+                  )..loadUserProfile(),
                 ),
 
                 BlocProvider(

@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:readly/core/routing/routes.dart';
-
 import 'package:readly/core/theme/app_colors.dart';
+import 'package:readly/core/theme/app_text_styles.dart';
 import 'package:readly/features/auth/business_logic/auth_cubit.dart';
 import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/readly/profile/business_logic/profile_cubit.dart';
@@ -22,6 +25,117 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<void> _showDeleteProfilePictureDialog() async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          backgroundColor: AppColors.white,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+
+          title: Text(
+            'Delete profile picture?',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.buttonBlueDark,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          content: Text(
+            'Are you sure you want to remove your profile picture?',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.grey500,
+              height: 1.5,
+            ),
+          ),
+
+          actionsPadding: EdgeInsets.zero,
+
+          actions: [
+            SizedBox(
+              height: 52.h,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop(false);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.buttonBlueDark,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    width: 1.w,
+                    height: 52.h,
+                    color: AppColors.buttonBlueDark.withValues(alpha: 0.25),
+                  ),
+
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop(true);
+                      },
+                      child: Text(
+                        'Delete',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.buttonBlueDark,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldDelete == true && mounted) {
+      context.read<ProfileCubit>().deleteProfilePicture();
+    }
+  }
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickProfilePicture() async {
+    try {
+      final XFile? pickedImage = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
+
+      if (pickedImage == null) {
+        return;
+      }
+
+      final imageFile = File(pickedImage.path);
+
+      if (!mounted) return;
+
+      context.read<ProfileCubit>().updateProfilePicture(imageFile);
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to select image: $e')));
+    }
+  }
+
   void _showLogoutBottomSheet(BuildContext context) {
     final authCubit = context.read<AuthCubit>();
 
@@ -54,18 +168,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is Unauthenticated) {
-          context.go(Routes.login);
-        }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is Unauthenticated) {
+              context.go(Routes.login);
+            }
 
-        if (state is AuthError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
-        }
-      },
+            if (state is AuthError) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
+            }
+          },
+        ),
+
+        BlocListener<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            if (state is ProfileLoaded &&
+                state.pictureStatus == ProfilePictureStatus.success) {
+              context.read<AuthCubit>().checkAuthStatus();
+            }
+
+            if (state is ProfileLoaded &&
+                state.pictureStatus == ProfilePictureStatus.failure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.pictureError ?? 'Failed to update profile picture.',
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      ],
+
       child: Scaffold(
         backgroundColor: AppColors.background,
         body: SafeArea(
@@ -87,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       debugPrint(
                         'PROFILE SCREEN DISPLAY NAME: ${authState.user.displayName}',
                       );
-                      
+
                       final displayName = authState.user.displayName;
 
                       if (displayName != null &&
@@ -96,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       }
 
                       photoUrl = authState.user.photoUrl;
-                       debugPrint('FINAL PROFILE NAME: $name');
+                      debugPrint('FINAL PROFILE NAME: $name');
                     }
 
                     return SingleChildScrollView(
@@ -106,7 +245,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       child: Column(
                         children: [
-                          ProfileHeader(name: name, photoUrl: photoUrl),
+                          ProfileHeader(
+                            name: name,
+                            photoUrl: photoUrl,
+                            onImagePressed: _pickProfilePicture,
+                            onDeletePressed: _showDeleteProfilePictureDialog,
+                          ),
 
                           SizedBox(height: 30.h),
 

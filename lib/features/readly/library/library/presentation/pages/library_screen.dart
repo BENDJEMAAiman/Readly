@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readly/core/routing/routes.dart';
 import 'package:readly/core/theme/app_colors.dart';
+import 'package:readly/features/auth/business_logic/auth_cubit.dart';
+import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/readly/library/library/business_logic/library_cubit.dart';
 import 'package:readly/features/readly/library/library/business_logic/library_state.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
@@ -71,7 +73,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const LibraryHeader(), //you must pass here the profile image after building profile feature
+              BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, authState) {
+                  ImageProvider? profileImage;
+
+                  if (authState is Authenticated) {
+                    final photoUrl = authState.user.photoUrl;
+
+                    if (photoUrl != null && photoUrl.isNotEmpty) {
+                      profileImage = NetworkImage(photoUrl);
+                    }
+                  }
+
+                  return LibraryHeader(profileImage: profileImage);
+                },
+              ),
               SizedBox(height: 24.h),
               LibrarySearchField(
                 controller: _titleController,
