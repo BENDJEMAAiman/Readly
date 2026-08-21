@@ -11,7 +11,7 @@ import 'package:readly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:readly/features/auth/presentation/pages/forgot_password.dart';
 import 'package:readly/features/reading_session/business_logic/reading_session_cubit.dart';
 import 'package:readly/features/reading_session/presentation/pages/reading_session_screen.dart';
-import 'package:readly/features/readly/home/presentation/home_screen.dart';
+import 'package:readly/features/readly/home/presentation/pages/home_screen.dart';
 import 'package:readly/features/readly/library/add_manually/business_logic/book_form_cubit.dart';
 import 'package:readly/features/readly/library/add_manually/presentation/pages/add_book_manually_screen.dart';
 import 'package:readly/features/readly/library/library/business_logic/library_cubit.dart';
