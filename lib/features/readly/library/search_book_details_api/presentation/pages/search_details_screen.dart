@@ -238,9 +238,13 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                       ),
                                     );
 
+                                    debugPrint("ready to save the book");
+
                                     context.pop(updatedBook.toLibraryBook(
                                       readingStatus: cubit.selectedReadingStatus,
                                     ));
+
+                                    debugPrint("pop out - book");
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

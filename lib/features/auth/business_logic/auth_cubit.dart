@@ -25,10 +25,10 @@ class AuthCubit extends Cubit<AuthState> {
         emit(EmailVerificationRequired(user));
       }
     } catch (e, stackTrace) {
-  debugPrint('ERROR: $e');
-  debugPrintStack(stackTrace: stackTrace);
-  emit(AuthError(e.toString()));
-}
+      debugPrint('ERROR: $e');
+      debugPrintStack(stackTrace: stackTrace);
+      emit(AuthError(e.toString()));
+    }
   }
 
   Future<void> signInWithEmail({
@@ -99,11 +99,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signOut() async {
-    emit(const AuthLoading());
+    emit(const LogoutLoading());
 
     try {
       await authRepository.signOut();
-
       emit(const Unauthenticated());
     } catch (e) {
       emit(AuthError(e.toString()));

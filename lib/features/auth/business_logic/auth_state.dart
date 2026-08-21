@@ -59,3 +59,7 @@ final class PasswordResetEmailSent extends AuthState {
 final class VerificationEmailSent extends AuthState {
   const VerificationEmailSent();
 }
+
+final class LogoutLoading extends AuthState {
+  const LogoutLoading();
+}

@@ -29,6 +29,7 @@ import 'package:readly/features/readly/notes/business_logic/notes_cubit.dart';
 import 'package:readly/features/readly/notes/presentation/new_reading_note_args.dart';
 import 'package:readly/features/readly/notes/presentation/pages/new_reading_note_screen.dart';
 import 'package:readly/features/readly/notes/presentation/pages/notes_screen.dart';
+import 'package:readly/features/readly/profile/business_logic/profile_cubit.dart';
 import 'package:readly/features/readly/profile/presentation/pages/profile_screen.dart';
 import 'package:readly/features/splash/business_logic/splash_cubit.dart';
 import 'package:readly/features/splash/presentation/splash_page.dart';
@@ -119,7 +120,16 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: Routes.profile,
           builder: (context, state) {
-            return const ProfileScreen();
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) =>
+                      ProfileCubit(profileRepository)..loadUserProfile(),
+                ),
+                BlocProvider(create: (_) => AuthCubit(authRepository)),
+              ],
+              child: const ProfileScreen(),
+            );
           },
         ),
       ],

@@ -15,6 +15,8 @@ import 'package:readly/features/readly/library/search_book_details_api/data/sear
 import 'package:readly/features/onboarding/data/onboarding_repository.dart';
 import 'package:readly/features/readly/notes/data/notes_repository.dart';
 import 'package:readly/features/readly/notes/data/notes_web_service.dart';
+import 'package:readly/features/readly/profile/data/profile_repository.dart';
+import 'package:readly/features/readly/profile/data/profile_web_service.dart';
 import 'package:readly/features/splash/data/splash_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:readly/features/readly/library/library/data/library_repository.dart';
@@ -64,6 +66,9 @@ final notesRepository = NotesRepository(notesWebService);
 //reading session
 final readingSessionWebService = ReadingSessionWebService(FirebaseFirestore.instance, FirebaseAuth.instance);
 final readingSessionRepository = ReadingSessionRepository(readingSessionWebService);
+
+final profileWebService = ProfileWebService(FirebaseFirestore.instance, FirebaseAuth.instance);
+final profileRepository = ProfileRepository(profileWebService);
 
 
 Future<void> initializeDependencies() async {
