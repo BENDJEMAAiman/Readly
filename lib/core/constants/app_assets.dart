@@ -25,5 +25,7 @@ class AppAssets {
   static const libraryGrey = 'assets/libraryGrey.png';
   static const notesGrey = 'assets/notesGrey.png';
   static const profileGrey = 'assets/profileGrey.png';
+
+  static const homeHeaderIcon = 'assets/home_header_icon.png';
  
 }
