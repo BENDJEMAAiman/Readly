@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:readly/features/auth/data/auth_web_service.dart';
 import 'package:readly/features/auth/model/user_entity.dart';
 
@@ -7,25 +8,37 @@ class AuthRepository {
   AuthRepository(this.authWebService);
 
   UserEntity _mapUser(User firebaseUser) {
-    //private
+    debugPrint('================ USER DEBUG ================');
+    debugPrint('UID: ${firebaseUser.uid}');
+    debugPrint('EMAIL: ${firebaseUser.email}');
+    debugPrint('DISPLAY NAME FROM FIREBASE: ${firebaseUser.displayName}');
+    debugPrint('PHOTO URL FROM FIREBASE: ${firebaseUser.photoURL}');
+    debugPrint('EMAIL VERIFIED: ${firebaseUser.emailVerified}');
+    debugPrint('============================================');
     return UserEntity(
       uid: firebaseUser.uid,
-      email: firebaseUser.email ?? "",
+      email: firebaseUser.email ?? '',
       emailVerified: firebaseUser.emailVerified,
+      displayName: firebaseUser.displayName,
+      photoUrl: firebaseUser.photoURL,
     );
   }
 
   Future<UserEntity> signUpWithEmail({
+    required String name,
     required String email,
     required String password,
   }) async {
     try {
       await authWebService.signUpWithEmail(email: email, password: password);
+      await authWebService.updateDisplayName(name);
       await authWebService.sendEmailVerif();
       final currentUser = authWebService.getCurrentUser();
+
       if (currentUser == null) {
         throw Exception("Failed to retrieve the authenticated user.");
       }
+
       return _mapUser(currentUser);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {

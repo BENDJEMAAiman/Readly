@@ -94,4 +94,13 @@ class AuthWebService {
       rethrow;
     }
   }
+
+  Future<void> updateDisplayName(String name) async {
+    try {
+      await firebaseAuth.currentUser?.updateDisplayName(name);
+      await firebaseAuth.currentUser?.reload();
+    } on FirebaseAuthException {
+      rethrow;
+    }
+  }
 }

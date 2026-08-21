@@ -8,12 +8,10 @@ class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
     super.key,
     required this.name,
-    required this.memberSince,
     this.photoUrl,
   });
 
   final String name;
-  final String memberSince;
   final String? photoUrl;
 
   @override
@@ -35,13 +33,6 @@ class ProfileHeader extends StatelessWidget {
 
         SizedBox(height: 4.h),
 
-        Text(
-          'Reading with Readly since $memberSince',
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.primaryLight,
-            fontSize: 12.sp,
-          ),
-        ),
       ],
     );
   }

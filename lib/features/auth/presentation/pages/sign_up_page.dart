@@ -45,6 +45,7 @@ class _SignupPageState extends State<SignupPage> {
     if (!_formKey.currentState!.validate()) return;
 
     context.read<AuthCubit>().signUpWithEmail(
+      name: _nameController.text,
       email: _emailController.text.trim(),
       password: _passwordController.text,
     );

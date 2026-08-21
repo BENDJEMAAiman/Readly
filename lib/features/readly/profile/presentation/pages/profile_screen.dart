@@ -10,6 +10,7 @@ import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/readly/profile/business_logic/profile_cubit.dart';
 import 'package:readly/features/readly/profile/business_logic/profile_state.dart';
 import 'package:readly/features/readly/profile/presentation/widgets/logout_bottom_sheet.dart';
+import 'package:readly/features/readly/profile/presentation/widgets/profile_header.dart';
 import 'package:readly/features/readly/profile/presentation/widgets/profile_menu_card.dart';
 import 'package:readly/features/readly/profile/presentation/widgets/profile_stat_card.dart';
 
@@ -73,51 +74,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (state is ProfileLoaded) {
                 final stats = state.stats;
 
-                return SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 24.h,
-                  ),
-                  child: Column(
-                    children: [
-                      // Temporary empty space/header for now.
-                      SizedBox(height: 30.h),
+                return BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, authState) {
+                    debugPrint(
+                      'PROFILE SCREEN AUTH STATE: ${authState.runtimeType}',
+                    );
 
-                      Row(
+                    String name = 'Reader';
+                    String? photoUrl;
+
+                    if (authState is Authenticated) {
+                      debugPrint(
+                        'PROFILE SCREEN DISPLAY NAME: ${authState.user.displayName}',
+                      );
+                      
+                      final displayName = authState.user.displayName;
+
+                      if (displayName != null &&
+                          displayName.trim().isNotEmpty) {
+                        name = displayName.trim();
+                      }
+
+                      photoUrl = authState.user.photoUrl;
+                       debugPrint('FINAL PROFILE NAME: $name');
+                    }
+
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20.w,
+                        vertical: 24.h,
+                      ),
+                      child: Column(
                         children: [
-                          ProfileStatCard(
-                            value: stats.booksCompleted.toString(),
-                            label: 'Books read',
+                          ProfileHeader(name: name, photoUrl: photoUrl),
+
+                          SizedBox(height: 30.h),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ProfileStatCard(
+                                  value: stats.booksCompleted.toString(),
+                                  label: 'Books read',
+                                ),
+                              ),
+
+                              SizedBox(width: 12.w),
+
+                              Expanded(
+                                child: ProfileStatCard(
+                                  value: stats.pagesRead.toString(),
+                                  label: 'Pages read',
+                                ),
+                              ),
+                            ],
                           ),
 
-                          SizedBox(width: 12.w),
+                          SizedBox(height: 24.h),
 
-                          ProfileStatCard(
-                            value: stats.pagesRead.toString(),
-                            label: 'Pages read',
+                          ProfileMenuCard(
+                            onAccountPressed: () {},
+                            onReadingGoalsPressed: () {},
+                            onLogoutPressed: () {
+                              _showLogoutBottomSheet(context);
+                            },
                           ),
                         ],
                       ),
-
-                      SizedBox(height: 24.h),
-
-                      ProfileMenuCard(
-                        onAccountPressed: () {
-                          // We will handle navigation later.
-                        },
-
-                        onReadingGoalsPressed: () {
-                          // We will handle navigation later.
-                        },
-
-                        onLogoutPressed: () {
-                          _showLogoutBottomSheet(context);
-                        },
-                      ),
-
-                      // Menu comes next.
-                    ],
-                  ),
+                    );
+                  },
                 );
               }
 

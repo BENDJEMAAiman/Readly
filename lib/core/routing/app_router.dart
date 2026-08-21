@@ -126,7 +126,10 @@ final GoRouter appRouter = GoRouter(
                   create: (_) =>
                       ProfileCubit(profileRepository)..loadUserProfile(),
                 ),
-                BlocProvider(create: (_) => AuthCubit(authRepository)),
+
+                BlocProvider(
+                  create: (_) => AuthCubit(authRepository)..checkAuthStatus(),
+                ),
               ],
               child: const ProfileScreen(),
             );

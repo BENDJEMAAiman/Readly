@@ -8,6 +8,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.authRepository) : super(const AuthInitial());
 
   Future<void> signUpWithEmail({
+    required String name,
     required String email,
     required String password,
   }) async {
@@ -15,6 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     try {
       final user = await authRepository.signUpWithEmail(
+         name: name,
         email: email,
         password: password,
       );
