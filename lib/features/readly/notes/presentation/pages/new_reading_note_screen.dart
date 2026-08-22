@@ -11,7 +11,6 @@ import 'package:readly/features/readly/notes/model/note_entity.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/new_note_book_card.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/new_note_top_bar.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/note_content_field.dart';
-import 'package:readly/features/readly/notes/presentation/widgets/note_editor_toolbar.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/note_title_field.dart';
 
 class NewReadingNoteScreen extends StatefulWidget {
@@ -286,7 +285,7 @@ class _NewReadingNoteScreenState extends State<NewReadingNoteScreen> {
                 ),
               ),
 
-              const NoteEditorToolbar(),
+             
             ],
           ),
         ),

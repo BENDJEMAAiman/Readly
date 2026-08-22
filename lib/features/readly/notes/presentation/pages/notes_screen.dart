@@ -9,7 +9,6 @@ import 'package:readly/features/readly/notes/business_logic/notes_state.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/notes_empty_state.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/notes_header.dart';
 import 'package:readly/features/readly/notes/presentation/widgets/notes_list.dart';
-import 'package:readly/features/readly/notes/presentation/widgets/notes_search_field.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({super.key});
@@ -34,10 +33,6 @@ class _NotesScreenState extends State<NotesScreen> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  void _onSearchChanged(String value) {
-    // Search functionality will be implemented next.
   }
 
   @override
@@ -65,13 +60,6 @@ class _NotesScreenState extends State<NotesScreen> {
 
                   return NotesHeader(profileImage: profileImage);
                 },
-              ),
-
-              SizedBox(height: 24.h),
-
-              NotesSearchField(
-                controller: _searchController,
-                onChanged: _onSearchChanged,
               ),
 
               SizedBox(height: 24.h),
