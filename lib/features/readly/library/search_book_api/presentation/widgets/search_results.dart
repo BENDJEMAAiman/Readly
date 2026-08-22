@@ -7,7 +7,7 @@ import 'package:readly/core/theme/app_text_styles.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
 import 'package:readly/features/readly/library/search_book_api/business_logic/search_cubit.dart';
 import 'package:readly/features/readly/library/search_book_api/business_logic/search_state.dart';
-import 'package:readly/features/readly/library/search_book_api/presentation/widgets/recent_activity.dart';
+import 'package:readly/features/readly/library/search_book_api/presentation/widgets/search_empty_illustration.dart';
 import 'package:readly/features/readly/library/search_book_api/presentation/widgets/search_result_tile.dart';
 
 class SearchResults extends StatelessWidget {
@@ -21,7 +21,7 @@ class SearchResults extends StatelessWidget {
       builder: (context, state) {
         switch (state) {
           case SearchInitial():
-            return const RecentActivity();
+            return const SearchEmptyIllustration();
 
           case SearchLoading():
             return const Center(child: CircularProgressIndicator());
