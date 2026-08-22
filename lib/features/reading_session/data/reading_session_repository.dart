@@ -8,29 +8,29 @@ class ReadingSessionRepository {
 
   ReadingSessionRepository(this.readingSessionWebService);
 
-  
-
   Future<List<ReadingSession>> fetchReadingSessionsForBook(
     String bookId,
   ) async {
-    return await readingSessionWebService.fetchReadingSessionsForBook(
-      bookId,
-    );
+    return await readingSessionWebService.fetchReadingSessionsForBook(bookId);
   }
 
   Future<ReadingSession> saveCompletedReadingSession({
-  required LibraryBook updatedBook,
-  required DateTime startedAt,
-  required DateTime endedAt,
-  required int durationSeconds,
-  required int pagesRead,
-}) async {
-  return await readingSessionWebService.saveCompletedReadingSession(
-    updatedBook: updatedBook,
-    startedAt: startedAt,
-    endedAt: endedAt,
-    durationSeconds: durationSeconds,
-    pagesRead: pagesRead,
-  );
-}
+    required LibraryBook updatedBook,
+    required DateTime startedAt,
+    required DateTime endedAt,
+    required int durationSeconds,
+    required int pagesRead,
+  }) async {
+    return await readingSessionWebService.saveCompletedReadingSession(
+      updatedBook: updatedBook,
+      startedAt: startedAt,
+      endedAt: endedAt,
+      durationSeconds: durationSeconds,
+      pagesRead: pagesRead,
+    );
+  }
+
+  Future<List<ReadingSession>> fetchTodayReadingSessions() async {
+    return await readingSessionWebService.fetchTodayReadingSessions();
+  }
 }

@@ -97,4 +97,43 @@ class ReadingSessionWebService {
       throw Exception('Failed to save completed reading session: $e');
     }
   }
+
+  Future<List<ReadingSession>> fetchTodayReadingSessions() async {
+    try {
+      final uid = _getCurrentUserId();
+
+      final now = DateTime.now();
+
+      final startOfToday = DateTime(now.year, now.month, now.day);
+
+      final startOfTomorrow = startOfToday.add(const Duration(days: 1));
+
+      final booksSnapshot = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('books')
+          .get();
+
+      final List<ReadingSession> sessions = [];
+
+      for (final book in booksSnapshot.docs) {
+        final sessionsSnapshot = await book.reference
+            .collection('reading_sessions')
+            .where(
+              'startedAt',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(startOfToday),
+            )
+            .where('startedAt', isLessThan: Timestamp.fromDate(startOfTomorrow))
+            .get();
+
+        sessions.addAll(
+          sessionsSnapshot.docs.map((doc) => ReadingSession.fromFirestore(doc)),
+        );
+      }
+
+      return sessions;
+    } catch (e) {
+      throw Exception('Failed to fetch today reading sessions: $e');
+    }
+  }
 }

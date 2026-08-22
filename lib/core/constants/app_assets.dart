@@ -27,5 +27,8 @@ class AppAssets {
   static const profileGrey = 'assets/profileGrey.png';
 
   static const homeHeaderIcon = 'assets/home_header_icon.png';
+
+  static const timer = 'assets/time_icon.png';
+  static const finish = 'assets/finish_icon.png';
  
 }
