@@ -243,8 +243,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: Routes.splash,
       builder: (context, state) {
-        return BlocProvider(
-          create: (_) => SplashCubit(splashRepository),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => SplashCubit(splashRepository)),
+            BlocProvider(create: (_) => AuthCubit(authRepository)),
+          ],
           child: const SplashPage(),
         );
       },

@@ -33,10 +33,10 @@ class AddManuallyButton extends StatelessWidget {
                 color: AppColors.white,
               ),
 
-              SizedBox(width: 8.w),
+              SizedBox(width: 14.w),
 
               Text(
-                "Didn't find the book?",
+                "Not found?",
                 style: AppTextStyles.labelMedium.copyWith(
                   color: AppColors.white,
                 ),

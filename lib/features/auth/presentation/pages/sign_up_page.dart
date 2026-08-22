@@ -58,7 +58,7 @@ class _SignupPageState extends State<SignupPage> {
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            context.go(Routes.search);
+            context.go(Routes.home);
           } else if (state is EmailVerificationRequired) {
             context.go(Routes.checkEmailVerification, extra: state.user.email);
           } else if (state is AuthError) {

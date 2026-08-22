@@ -3,6 +3,8 @@ import 'package:readly/features/onboarding/data/models/onboarding_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingRepository {
+  static const _onboardingKey = 'has_seen_onboarding';
+
   final SharedPreferences sharedPreferences;
 
   OnboardingRepository(this.sharedPreferences);
@@ -15,14 +17,12 @@ class OnboardingRepository {
         description:
             "See what you're reading, how far you've gone, and build a habit that sticks.",
       ),
-
       OnboardingModel(
         image: AppAssets.onboarding2,
         title: 'Never lose a great line\nas you read',
         description:
             "Save your thoughts as you read, so your favorite moments are always there when you need them.",
       ),
-
       OnboardingModel(
         image: AppAssets.onboarding3,
         title: 'Build your reading\nstreak',
@@ -33,6 +33,6 @@ class OnboardingRepository {
   }
 
   Future<void> completeOnboarding() async {
-    await sharedPreferences.setBool('hasSeenOnboarding', true);
+    await sharedPreferences.setBool(_onboardingKey, true);
   }
 }

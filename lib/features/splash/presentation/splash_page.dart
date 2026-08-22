@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:readly/core/constants/app_assets.dart';
 import 'package:readly/core/routing/routes.dart';
+import 'package:readly/features/auth/business_logic/auth_cubit.dart';
+import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/splash/business_logic/splash_cubit.dart';
 import 'package:readly/features/splash/business_logic/splash_state.dart';
 
@@ -24,16 +26,39 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SplashCubit, SplashState>(
-      listener: (context, state) {
-        if (state is NavigateToOnboarding) {
-          context.go(Routes.onboarding);
-        }
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SplashCubit, SplashState>(
+          listener: (context, state) {
+            if (state is NavigateToOnboarding) {
+              context.go(Routes.onboarding);
+            }
 
-        if (state is CheckAuthentication) {
-          context.go(Routes.login);
-        }
-      },
+            if (state is CheckAuthentication) {
+              context.read<AuthCubit>().checkAuthStatus();
+            }
+          },
+        ),
+
+        BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is Authenticated) {
+              context.go(Routes.home);
+            }
+
+            if (state is Unauthenticated) {
+              context.go(Routes.login);
+            }
+
+            if (state is EmailVerificationRequired) {
+              context.go(
+                Routes.checkEmailVerification,
+                extra: state.user.email,
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         backgroundColor: const Color(0xFFC3D9EE),
         body: SafeArea(
