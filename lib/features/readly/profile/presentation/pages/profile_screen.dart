@@ -333,7 +333,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(height: 24.h),
 
                           ProfileMenuCard(
-                            onAccountPressed: () {},
                             onReadingGoalsPressed: () {
                               _showReadingGoalBottomSheet(context, stats);
                             },

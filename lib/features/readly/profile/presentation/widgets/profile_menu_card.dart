@@ -8,12 +8,11 @@ import 'package:readly/features/readly/profile/presentation/widgets/profile_menu
 class ProfileMenuCard extends StatelessWidget {
   const ProfileMenuCard({
     super.key,
-    required this.onAccountPressed,
     required this.onReadingGoalsPressed,
     required this.onLogoutPressed,
   });
 
-  final VoidCallback onAccountPressed;
+ 
   final VoidCallback onReadingGoalsPressed;
   final VoidCallback onLogoutPressed;
 
@@ -51,13 +50,7 @@ class ProfileMenuCard extends StatelessWidget {
             ),
           ),
 
-          ProfileMenuItem(
-            title: 'My account',
-            onTap: onAccountPressed,
-          ),
-
-          _buildDivider(),
-
+          
           ProfileMenuItem(
             title: 'Reading goals',
             onTap: onReadingGoalsPressed,

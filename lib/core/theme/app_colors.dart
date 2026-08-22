@@ -25,7 +25,8 @@ class AppColors {
   static const Color transparent = Colors.transparent;
 
   //buttons
-  static const buttonBlue = Color(0xFFADCDED);
+  static const buttonBlue = Color(0xFF7FABD8);
+
   static const buttonBlueDark = Color(0xFF7FABD8);
 
   //background
