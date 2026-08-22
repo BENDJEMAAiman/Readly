@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 16.h),
           
                 const CurrentlyReadingSection(),
-                SizedBox(height: 40.h),
+                SizedBox(height: 10.h),
           
                 const YourProgressSection(),
           

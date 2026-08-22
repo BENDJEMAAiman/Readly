@@ -65,7 +65,7 @@ class YourProgressSection extends StatelessWidget {
           style: AppTextStyles.headingLarge.copyWith(fontSize: 22.sp),
         ),
 
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
 
         Row(
           children: [
