@@ -38,7 +38,9 @@ class ProfileWebService {
       int booksCompleted = 0;
       int pagesRead = 0;
       int totalReadingSeconds = 0;
+
       int todayReadingSeconds = 0;
+      int todayPagesRead = 0;
 
       final now = DateTime.now();
 
@@ -63,6 +65,7 @@ class ProfileWebService {
           final durationSeconds = (sessionData['durationSeconds'] as int?) ?? 0;
 
           pagesRead += sessionPagesRead;
+
           totalReadingSeconds += durationSeconds;
 
           final startedAt = sessionData['startedAt'];
@@ -72,6 +75,7 @@ class ProfileWebService {
 
             if (_isSameDay(sessionDate, now)) {
               todayReadingSeconds += durationSeconds;
+              todayPagesRead += sessionPagesRead;
             }
           }
         }
@@ -81,8 +85,14 @@ class ProfileWebService {
         booksCompleted: booksCompleted,
         pagesRead: pagesRead,
         totalReadingMinutes: totalReadingSeconds ~/ 60,
+
         dailyGoalMinutes: (userData['dailyGoalMinutes'] as int?) ?? 0,
+
+        dailyGoalPages: (userData['dailyGoalPages'] as int?) ?? 0,
+
         todayReadingMinutes: todayReadingSeconds ~/ 60,
+
+        todayPagesRead: todayPagesRead,
       );
     } catch (e) {
       throw Exception('Failed to fetch user stats: $e');
@@ -93,5 +103,21 @@ class ProfileWebService {
     return first.year == second.year &&
         first.month == second.month &&
         first.day == second.day;
+  }
+
+  Future<void> updateReadingGoals({
+    required int dailyGoalPages,
+    required int dailyGoalMinutes,
+  }) async {
+    try {
+      final uid = _getCurrentUserId();
+
+      await firestore.collection('users').doc(uid).set({
+        'dailyGoalPages': dailyGoalPages,
+        'dailyGoalMinutes': dailyGoalMinutes,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      throw Exception('Failed to update reading goals: $e');
+    }
   }
 }

@@ -8,6 +8,7 @@ import 'package:readly/features/reading_session/business_logic/reading_session_s
 import 'package:readly/features/reading_session/presentation/widgets/book_completed_dialog.dart';
 import 'package:readly/features/reading_session/presentation/widgets/discard_session_dialog.dart';
 import 'package:readly/features/reading_session/presentation/widgets/pages_read_bottom_sheet.dart';
+import 'package:readly/features/reading_session/presentation/widgets/reading_goal_achieved_dialog.dart';
 import 'package:readly/features/reading_session/presentation/widgets/reading_session_top_bar.dart';
 import 'package:readly/features/reading_session/presentation/widgets/session_book_card.dart';
 import 'package:readly/features/reading_session/presentation/widgets/session_control_button.dart';
@@ -126,6 +127,30 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
     return BlocListener<ReadingSessionCubit, ReadingSessionState>(
       listener: (context, state) async {
         if (state is SessionCompleted) {
+          // --------------------------------------------------------
+          // 1. Show goal achievement first
+          // --------------------------------------------------------
+
+          if (state.goalAchievement.hasAchievement) {
+            await showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return ReadingGoalAchievedDialog(
+                  achievement: state.goalAchievement,
+                );
+              },
+            );
+
+            if (!context.mounted) {
+              return;
+            }
+          }
+
+          // --------------------------------------------------------
+          // 2. Then handle book completion
+          // --------------------------------------------------------
+
           if (state.bookCompleted) {
             await showDialog<void>(
               context: context,
@@ -142,6 +167,10 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
             context.pop(state.book);
             return;
           }
+
+          // --------------------------------------------------------
+          // 3. Normal session completion
+          // --------------------------------------------------------
 
           context.pop(state.book);
         }

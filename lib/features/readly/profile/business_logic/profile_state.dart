@@ -8,6 +8,13 @@ enum ProfilePictureStatus {
   failure,
 }
 
+enum ReadingGoalStatus {
+  initial,
+  saving,
+  success,
+  failure,
+}
+
 abstract class ProfileState extends Equatable {
   const ProfileState();
 
@@ -25,24 +32,42 @@ class ProfileLoading extends ProfileState {
 
 class ProfileLoaded extends ProfileState {
   final UserStats stats;
+
   final ProfilePictureStatus pictureStatus;
   final String? pictureError;
+
+  final ReadingGoalStatus readingGoalStatus;
+  final String? readingGoalError;
 
   const ProfileLoaded({
     required this.stats,
     this.pictureStatus = ProfilePictureStatus.initial,
     this.pictureError,
+    this.readingGoalStatus = ReadingGoalStatus.initial,
+    this.readingGoalError,
   });
 
   ProfileLoaded copyWith({
     UserStats? stats,
     ProfilePictureStatus? pictureStatus,
     String? pictureError,
+    ReadingGoalStatus? readingGoalStatus,
+    String? readingGoalError,
   }) {
     return ProfileLoaded(
       stats: stats ?? this.stats,
-      pictureStatus: pictureStatus ?? this.pictureStatus,
-      pictureError: pictureError,
+
+      pictureStatus:
+          pictureStatus ?? this.pictureStatus,
+
+      pictureError:
+          pictureError ?? this.pictureError,
+
+      readingGoalStatus:
+          readingGoalStatus ?? this.readingGoalStatus,
+
+      readingGoalError:
+          readingGoalError,
     );
   }
 
@@ -51,6 +76,8 @@ class ProfileLoaded extends ProfileState {
         stats,
         pictureStatus,
         pictureError,
+        readingGoalStatus,
+        readingGoalError,
       ];
 }
 

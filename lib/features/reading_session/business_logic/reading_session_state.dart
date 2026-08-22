@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:readly/features/reading_session/model/reading_goal_achievement.dart';
 import 'package:readly/features/reading_session/model/reading_session.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
 
@@ -41,15 +42,22 @@ class SessionCompleted extends ReadingSessionState {
   final ReadingSession session;
   final LibraryBook book;
   final bool bookCompleted;
+  final ReadingGoalAchievement goalAchievement;
 
   const SessionCompleted({
     required this.session,
     required this.book,
     required this.bookCompleted,
+    required this.goalAchievement,
   });
 
   @override
-  List<Object?> get props => [session, book, bookCompleted];
+  List<Object?> get props => [
+        session,
+        book,
+        bookCompleted,
+        goalAchievement,
+      ];
 }
 
 class SessionError extends ReadingSessionState {

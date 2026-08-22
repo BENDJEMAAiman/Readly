@@ -4,15 +4,23 @@ class UserStats extends Equatable {
   final int booksCompleted;
   final int pagesRead;
   final int totalReadingMinutes;
+
+  // Daily goals
   final int dailyGoalMinutes;
+  final int dailyGoalPages;
+
+  // Today's progress
   final int todayReadingMinutes;
+  final int todayPagesRead;
 
   const UserStats({
     this.booksCompleted = 0,
     this.pagesRead = 0,
     this.totalReadingMinutes = 0,
     this.dailyGoalMinutes = 0,
+    this.dailyGoalPages = 0,
     this.todayReadingMinutes = 0,
+    this.todayPagesRead = 0,
   });
 
   UserStats copyWith({
@@ -20,7 +28,9 @@ class UserStats extends Equatable {
     int? pagesRead,
     int? totalReadingMinutes,
     int? dailyGoalMinutes,
+    int? dailyGoalPages,
     int? todayReadingMinutes,
+    int? todayPagesRead,
   }) {
     return UserStats(
       booksCompleted: booksCompleted ?? this.booksCompleted,
@@ -29,8 +39,12 @@ class UserStats extends Equatable {
           totalReadingMinutes ?? this.totalReadingMinutes,
       dailyGoalMinutes:
           dailyGoalMinutes ?? this.dailyGoalMinutes,
+      dailyGoalPages:
+          dailyGoalPages ?? this.dailyGoalPages,
       todayReadingMinutes:
           todayReadingMinutes ?? this.todayReadingMinutes,
+      todayPagesRead:
+          todayPagesRead ?? this.todayPagesRead,
     );
   }
 
@@ -40,6 +54,8 @@ class UserStats extends Equatable {
         pagesRead,
         totalReadingMinutes,
         dailyGoalMinutes,
+        dailyGoalPages,
         todayReadingMinutes,
+        todayPagesRead,
       ];
 }

@@ -136,4 +136,21 @@ class ReadingSessionWebService {
       throw Exception('Failed to fetch today reading sessions: $e');
     }
   }
+
+  Future<Map<String, int>> fetchDailyGoals() async {
+    try {
+      final uid = _getCurrentUserId();
+
+      final userDoc = await firestore.collection('users').doc(uid).get();
+
+      final data = userDoc.data() ?? {};
+
+      return {
+        'dailyGoalPages': (data['dailyGoalPages'] as int?) ?? 0,
+        'dailyGoalMinutes': (data['dailyGoalMinutes'] as int?) ?? 0,
+      };
+    } catch (e) {
+      throw Exception('Failed to fetch daily goals: $e');
+    }
+  }
 }

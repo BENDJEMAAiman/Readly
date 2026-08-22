@@ -1,7 +1,5 @@
-
 import 'package:readly/features/readly/profile/data/profile_web_service.dart';
 import 'package:readly/features/readly/profile/model/user_stats.dart';
-
 
 class ProfileRepository {
   final ProfileWebService profileWebService;
@@ -10,5 +8,15 @@ class ProfileRepository {
 
   Future<UserStats> fetchUserStats() {
     return profileWebService.fetchUserStats();
+  }
+
+  Future<void> updateReadingGoals({
+    required int dailyGoalPages,
+    required int dailyGoalMinutes,
+  }) {
+    return profileWebService.updateReadingGoals(
+      dailyGoalPages: dailyGoalPages,
+      dailyGoalMinutes: dailyGoalMinutes,
+    );
   }
 }

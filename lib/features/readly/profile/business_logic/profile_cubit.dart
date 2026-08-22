@@ -100,4 +100,46 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
     }
   }
+
+
+  Future<void> updateReadingGoals({
+  required int dailyGoalPages,
+  required int dailyGoalMinutes,
+}) async {
+  if (_currentStats == null) return;
+
+  try {
+    emit(
+      ProfileLoaded(
+        stats: _currentStats!,
+        readingGoalStatus: ReadingGoalStatus.saving,
+      ),
+    );
+
+    await profileRepository.updateReadingGoals(
+      dailyGoalPages: dailyGoalPages,
+      dailyGoalMinutes: dailyGoalMinutes,
+    );
+
+    _currentStats = _currentStats!.copyWith(
+      dailyGoalPages: dailyGoalPages,
+      dailyGoalMinutes: dailyGoalMinutes,
+    );
+
+    emit(
+      ProfileLoaded(
+        stats: _currentStats!,
+        readingGoalStatus: ReadingGoalStatus.success,
+      ),
+    );
+  } catch (e) {
+    emit(
+      ProfileLoaded(
+        stats: _currentStats!,
+        readingGoalStatus: ReadingGoalStatus.failure,
+        readingGoalError: e.toString(),
+      ),
+    );
+  }
+}
 }

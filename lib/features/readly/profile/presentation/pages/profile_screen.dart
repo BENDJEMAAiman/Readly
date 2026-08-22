@@ -12,10 +12,12 @@ import 'package:readly/features/auth/business_logic/auth_cubit.dart';
 import 'package:readly/features/auth/business_logic/auth_state.dart';
 import 'package:readly/features/readly/profile/business_logic/profile_cubit.dart';
 import 'package:readly/features/readly/profile/business_logic/profile_state.dart';
+import 'package:readly/features/readly/profile/model/user_stats.dart';
 import 'package:readly/features/readly/profile/presentation/widgets/logout_bottom_sheet.dart';
 import 'package:readly/features/readly/profile/presentation/widgets/profile_header.dart';
 import 'package:readly/features/readly/profile/presentation/widgets/profile_menu_card.dart';
 import 'package:readly/features/readly/profile/presentation/widgets/profile_stat_card.dart';
+import 'package:readly/features/readly/profile/presentation/widgets/reading_goal_bottom_sheet.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -25,6 +27,46 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  void _showReadingGoalBottomSheet(BuildContext context, UserStats stats) {
+    final profileCubit = context.read<ProfileCubit>();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
+      ),
+      builder: (_) {
+        return BlocProvider.value(
+          value: profileCubit,
+          child: BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              if (state is! ProfileLoaded) {
+                return const SizedBox();
+              }
+
+              final isLoading =
+                  state.readingGoalStatus == ReadingGoalStatus.saving;
+
+              return ReadingGoalBottomSheet(
+                initialPages: state.stats.dailyGoalPages,
+                initialMinutes: state.stats.dailyGoalMinutes,
+                isLoading: isLoading,
+                onSave: ({required int pages, required int minutes}) {
+                  context.read<ProfileCubit>().updateReadingGoals(
+                    dailyGoalPages: pages,
+                    dailyGoalMinutes: minutes,
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _showDeleteProfilePictureDialog() async {
     final shouldDelete = await showDialog<bool>(
       context: context,
@@ -187,6 +229,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         BlocListener<ProfileCubit, ProfileState>(
           listener: (context, state) {
             if (state is ProfileLoaded &&
+                state.readingGoalStatus == ReadingGoalStatus.success) {
+              Navigator.of(context).pop();
+            }
+            if (state is ProfileLoaded &&
+                state.readingGoalStatus == ReadingGoalStatus.failure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.readingGoalError ?? 'Failed to update reading goals.',
+                  ),
+                ),
+              );
+            }
+            if (state is ProfileLoaded &&
                 state.pictureStatus == ProfilePictureStatus.success) {
               context.read<AuthCubit>().checkAuthStatus();
             }
@@ -278,7 +334,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                           ProfileMenuCard(
                             onAccountPressed: () {},
-                            onReadingGoalsPressed: () {},
+                            onReadingGoalsPressed: () {
+                              _showReadingGoalBottomSheet(context, stats);
+                            },
                             onLogoutPressed: () {
                               _showLogoutBottomSheet(context);
                             },

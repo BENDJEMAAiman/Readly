@@ -33,4 +33,8 @@ class ReadingSessionRepository {
   Future<List<ReadingSession>> fetchTodayReadingSessions() async {
     return await readingSessionWebService.fetchTodayReadingSessions();
   }
+
+  Future<Map<String, int>> fetchDailyGoals() async {
+  return await readingSessionWebService.fetchDailyGoals();
+}
 }

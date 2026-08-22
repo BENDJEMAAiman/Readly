@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readly/features/reading_session/business_logic/reading_session_state.dart';
 import 'package:readly/features/reading_session/data/reading_session_repository.dart';
+import 'package:readly/features/reading_session/model/reading_goal_achievement.dart';
+import 'package:readly/features/reading_session/model/reading_session.dart';
 import 'package:readly/features/readly/library/library/model/library_book.dart';
 
 class ReadingSessionCubit extends Cubit<ReadingSessionState> {
@@ -163,6 +165,10 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
       // 5. Save book + reading session atomically
       // ----------------------------------------------------------
 
+      final goalAchievement = await _checkGoalAchievement(
+        sessionDurationSeconds: _durationSeconds,
+        sessionPagesRead: pagesRead,
+      );
       final endedAt = DateTime.now();
 
       final session = await readingSessionRepository
@@ -183,6 +189,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
           session: session,
           book: updatedBook,
           bookCompleted: reachedEnd,
+          goalAchievement: goalAchievement,
         ),
       );
 
@@ -248,5 +255,57 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
   Future<void> close() {
     _timer?.cancel();
     return super.close();
+  }
+
+  Future<ReadingGoalAchievement> _checkGoalAchievement({
+    required int sessionDurationSeconds,
+    required int sessionPagesRead,
+  }) async {
+    final results = await Future.wait([
+      readingSessionRepository.fetchTodayReadingSessions(),
+      readingSessionRepository.fetchDailyGoals(),
+    ]);
+
+    final todaySessions = results[0] as List<ReadingSession>;
+
+    final goals = results[1] as Map<String, int>;
+
+    // Progress BEFORE the current session.
+    final previousReadingSeconds = todaySessions.fold<int>(
+      0,
+      (total, session) => total + session.durationSeconds,
+    );
+
+    final previousPagesRead = todaySessions.fold<int>(
+      0,
+      (total, session) => total + session.pagesRead,
+    );
+
+    // Progress AFTER the current session.
+    final currentReadingSeconds =
+        previousReadingSeconds + sessionDurationSeconds;
+
+    final currentPagesRead = previousPagesRead + sessionPagesRead;
+
+    final dailyGoalMinutes = goals['dailyGoalMinutes'] ?? 0;
+
+    final dailyGoalPages = goals['dailyGoalPages'] ?? 0;
+
+    final goalSeconds = dailyGoalMinutes * 60;
+
+    final timeGoalAchieved =
+        goalSeconds > 0 &&
+        previousReadingSeconds < goalSeconds &&
+        currentReadingSeconds >= goalSeconds;
+
+    final pagesGoalAchieved =
+        dailyGoalPages > 0 &&
+        previousPagesRead < dailyGoalPages &&
+        currentPagesRead >= dailyGoalPages;
+
+    return ReadingGoalAchievement(
+      timeGoalAchieved: timeGoalAchieved,
+      pagesGoalAchieved: pagesGoalAchieved,
+    );
   }
 }
