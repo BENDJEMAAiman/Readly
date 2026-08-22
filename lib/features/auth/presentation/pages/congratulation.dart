@@ -41,7 +41,7 @@ class _CongratulationState extends State<Congratulation> {
             PrimaryButton(
               title: 'Get Started',
               onPressed: () {
-                context.go(Routes.search);
+                context.go(Routes.home);
               },
             ),
 
