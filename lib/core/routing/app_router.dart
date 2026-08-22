@@ -45,7 +45,18 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: Routes.home,
           builder: (context, state) {
-            return const HomeScreen();
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => AuthCubit(authRepository)..checkAuthStatus(),
+                ),
+                BlocProvider(
+                  create: (_) =>
+                      LibraryCubit(libraryRepository)..fetchUserBooks(),
+                ),
+              ],
+              child: const HomeScreen(),
+            );
           },
         ),
 
