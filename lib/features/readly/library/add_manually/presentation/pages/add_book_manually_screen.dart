@@ -163,7 +163,7 @@ class _AddBookManuallyScreenState extends State<AddBookManuallyScreen> {
                                     description: controllers.description.text
                                         .trim(),
                                     category:
-                                        '', // we'll replace this when Subjects are implemented
+                                        '', // i'll replace this when Subjects are implemented
                                     pages: int.tryParse(
                                       controllers.pages.text.trim(),
                                     ),

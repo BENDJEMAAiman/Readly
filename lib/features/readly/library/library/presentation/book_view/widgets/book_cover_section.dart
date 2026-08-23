@@ -20,7 +20,7 @@ class BookCoverSection extends StatelessWidget {
   });
 
   Widget _buildCoverImage() {
-    // 1. Prefer the manually uploaded Cloudinary cover.
+    //the manually uploaded Cloudinary cover.
     if (coverImageUrl != null && coverImageUrl!.isNotEmpty) {
       return Image.network(
         coverImageUrl!,
@@ -36,8 +36,7 @@ class BookCoverSection extends StatelessWidget {
       );
     }
 
-    // 2. If there is no Cloudinary cover,
-    //    use the OpenLibrary cover.
+    //If there is no Cloudinary cover, use the OpenLibrary cover.
     if (coverId != null) {
       return Image.network(
         'https://covers.openlibrary.org/b/id/$coverId-M.jpg',
@@ -53,7 +52,7 @@ class BookCoverSection extends StatelessWidget {
       );
     }
 
-    // 3. No cover available.
+    //No cover available.
     return const Center(
       child: Icon(
         Icons.menu_book_rounded,

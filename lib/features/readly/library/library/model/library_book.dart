@@ -22,7 +22,7 @@ class LibraryBook {
   // Local image selected manually. it will not be stored in Firestore.
   final File? coverFile;
 
-  // Supabase Storage public URL.
+
   final String? coverImageUrl;
 
   final DateTime? createdAt;
@@ -95,7 +95,7 @@ class LibraryBook {
   }
 
  // coverFile is intentionally excluded:
-// coverFile is a local File and must first be uploaded to Supabase Storage.
+// coverFile is a local File and must first be uploaded to cloudinary Storage.
   Map<String, dynamic> toMap() {
     return {
       'title': title,

@@ -29,25 +29,23 @@ class HomeProgressCubit extends Cubit<HomeProgressState> {
       ]);
 
       final books = results[0] as List<LibraryBook>;
-final notes = results[1] as List;
-final readingSessions = results[2] as List<ReadingSession>;
+      final notes = results[1] as List;
+      final readingSessions = results[2] as List<ReadingSession>;
 
-final libraryBooksCount = books.length;
+      final libraryBooksCount = books.length;
 
-final finishedBooksCount = books
-    .where(
-      (book) => book.readingStatus == ReadingStatus.completed,
-    )
-    .length;
+      final finishedBooksCount = books
+          .where((book) => book.readingStatus == ReadingStatus.completed)
+          .length;
 
-final notesCount = notes.length;
+      final notesCount = notes.length;
 
-final totalReadingSeconds = readingSessions.fold<int>(
-  0,
-  (total, session) => total + session.durationSeconds,
-);
+      final totalReadingSeconds = readingSessions.fold<int>(
+        0,
+        (total, session) => total + session.durationSeconds,
+      );
 
-final readingMinutes = (totalReadingSeconds / 60).floor();
+      final readingMinutes = (totalReadingSeconds / 60).floor();
 
       emit(
         HomeProgressLoaded(
@@ -58,11 +56,7 @@ final readingMinutes = (totalReadingSeconds / 60).floor();
         ),
       );
     } catch (e) {
-      emit(
-        HomeProgressError(
-          message: e.toString(),
-        ),
-      );
+      emit(HomeProgressError(message: e.toString()));
     }
   }
 }

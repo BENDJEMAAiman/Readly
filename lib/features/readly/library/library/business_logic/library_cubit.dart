@@ -69,10 +69,7 @@ class LibraryCubit extends Cubit<LibraryState> {
     }
   }
 
-  /// Updates the current page of a book.
-  ///
-  /// This will be especially useful when the reading-session
-  /// feature is implemented later.
+
   Future<void> updateBookProgress(String bookId, int currentPage) async {
     try {
       final currentState = state;
@@ -256,11 +253,7 @@ class LibraryCubit extends Cubit<LibraryState> {
   }
 
   /// Changes the reading-status filter.
-  ///
   /// null means "All".
-  ///
-  /// This is local filtering only.
-  /// No Firestore request is made.
   void changeStatusFilter(ReadingStatus? status) {
     final currentState = state;
 

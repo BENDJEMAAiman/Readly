@@ -237,9 +237,7 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-    // ---------------------------------------------------------
     // SPLASH
-    // ---------------------------------------------------------
     GoRoute(
       path: Routes.splash,
       builder: (context, state) {
@@ -253,9 +251,7 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-    // ---------------------------------------------------------
     // ONBOARDING
-    // ---------------------------------------------------------
     GoRoute(
       path: Routes.onboarding,
       builder: (context, state) {

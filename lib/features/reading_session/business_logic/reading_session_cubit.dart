@@ -23,9 +23,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
 
   bool _isSaving = false;
 
-  // ------------------------------------------------------------
   // START SESSION
-  // ------------------------------------------------------------
 
   void startSession(LibraryBook book) {
     if (_timer != null) {
@@ -46,9 +44,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     emit(SessionActive(durationSeconds: _durationSeconds, book: book));
   }
 
-  // ------------------------------------------------------------
   // PAUSE SESSION
-  // ------------------------------------------------------------
 
   void pauseSession() {
     if (_timer == null) {
@@ -67,9 +63,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     emit(SessionPaused(durationSeconds: _durationSeconds, book: book));
   }
 
-  // ------------------------------------------------------------
   // RESUME SESSION
-  // ------------------------------------------------------------
 
   void resumeSession() {
     if (_timer != null) {
@@ -87,9 +81,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     emit(SessionActive(durationSeconds: _durationSeconds, book: book));
   }
 
-  // ------------------------------------------------------------
   // STOP AND SAVE SESSION
-  // ------------------------------------------------------------
 
   Future<void> stopAndSaveSession({required int pagesRead}) async {
     if (_isSaving) {
@@ -117,9 +109,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     emit(const SessionSaving());
 
     try {
-      // ----------------------------------------------------------
-      // 1. Validate the book
-      // ----------------------------------------------------------
+      // Validate the book
 
       final totalPages = book.pages;
 
@@ -132,9 +122,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
         return;
       }
 
-      // ----------------------------------------------------------
-      // 2. Calculate the new current page
-      // ----------------------------------------------------------
+      //Calculate the new current page
 
       final newCurrentPage = book.currentPage + pagesRead;
 
@@ -144,26 +132,20 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
 
       final reachedEnd = updatedCurrentPage >= totalPages;
 
-      // ----------------------------------------------------------
-      // 3. Calculate the new reading status
-      // ----------------------------------------------------------
+      // Calculate the new reading status
 
       final newReadingStatus = reachedEnd
           ? ReadingStatus.completed
           : ReadingStatus.reading;
 
-      // ----------------------------------------------------------
-      // 4. Create the updated book
-      // ----------------------------------------------------------
+      // Create the updated book
 
       final updatedBook = book.copyWith(
         currentPage: updatedCurrentPage,
         readingStatus: newReadingStatus,
       );
 
-      // ----------------------------------------------------------
-      // 5. Save book + reading session atomically
-      // ----------------------------------------------------------
+      // Save book + reading session atomically
 
       final goalAchievement = await _checkGoalAchievement(
         sessionDurationSeconds: _durationSeconds,
@@ -180,9 +162,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
             pagesRead: pagesRead,
           );
 
-      // ----------------------------------------------------------
-      // 6. Tell the UI that everything succeeded
-      // ----------------------------------------------------------
+      // Tell the UI that everything succeeded
 
       emit(
         SessionCompleted(
@@ -201,9 +181,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     }
   }
 
-  // ------------------------------------------------------------
   // DISCARD SESSION
-  // ------------------------------------------------------------
 
   void discardSession() {
     _timer?.cancel();
@@ -214,9 +192,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     emit(const SessionIdle());
   }
 
-  // ------------------------------------------------------------
   // TIMER
-  // ------------------------------------------------------------
 
   void _startTimer() {
     _timer?.cancel();
@@ -234,9 +210,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     });
   }
 
-  // ------------------------------------------------------------
   // CLEAR SESSION DATA
-  // ------------------------------------------------------------
 
   void _clearSession() {
     _timer?.cancel();
@@ -247,9 +221,7 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
     _durationSeconds = 0;
   }
 
-  // ------------------------------------------------------------
   // CLOSE
-  // ------------------------------------------------------------
 
   @override
   Future<void> close() {
@@ -286,11 +258,8 @@ class ReadingSessionCubit extends Cubit<ReadingSessionState> {
         previousReadingSeconds + sessionDurationSeconds;
 
     final currentPagesRead = previousPagesRead + sessionPagesRead;
-
     final dailyGoalMinutes = goals['dailyGoalMinutes'] ?? 0;
-
     final dailyGoalPages = goals['dailyGoalPages'] ?? 0;
-
     final goalSeconds = dailyGoalMinutes * 60;
 
     final timeGoalAchieved =

@@ -13,7 +13,7 @@ class BookInfoCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.author,
-    required this.status, //this also need to be modified when i add the reading cubit
+    required this.status, 
   });
 
   @override

@@ -83,8 +83,8 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
       return;
     }
 
-    // For now, just verify that the value came back correctly.
-    debugPrint('Pages read: $pagesRead');
+    
+    debugPrint('--------Pages read: $pagesRead');
     await cubit.stopAndSaveSession(pagesRead: pagesRead);
   }
 
@@ -127,9 +127,8 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
     return BlocListener<ReadingSessionCubit, ReadingSessionState>(
       listener: (context, state) async {
         if (state is SessionCompleted) {
-          // --------------------------------------------------------
-          // 1. Show goal achievement first
-          // --------------------------------------------------------
+    
+          // Show goal achievement first
 
           if (state.goalAchievement.hasAchievement) {
             await showDialog<void>(
@@ -146,11 +145,9 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
               return;
             }
           }
-
-          // --------------------------------------------------------
-          // 2. Then handle book completion
-          // --------------------------------------------------------
-
+         
+          // Then handle book completion
+         
           if (state.bookCompleted) {
             await showDialog<void>(
               context: context,
@@ -168,9 +165,7 @@ class _ReadingSessionScreenState extends State<ReadingSessionScreen> {
             return;
           }
 
-          // --------------------------------------------------------
-          // 3. Normal session completion
-          // --------------------------------------------------------
+          //Normal session completion
 
           context.pop(state.book);
         }
