@@ -20,6 +20,7 @@ class LibrarySearchField extends StatelessWidget {
         height: 55.h,
         child: TextField(
           controller: controller,
+          onChanged: onChanged,
           textInputAction: TextInputAction.search,
           style: AppTextStyles.bodyLarge,
           decoration: InputDecoration(
