@@ -11,13 +11,22 @@ class SearchDetailsCubit extends Cubit<SearchDetailsState> {
   final SearchDetailsRepository searchDetailsRepository;
 
   Future<void> getBookDetails(SearchModel basicInfo) async {
+    if (isClosed) return;
+
     emit(const SearchDetailsLoading());
 
     try {
       final book = await searchDetailsRepository.getBookDetails(basicInfo);
 
+      // The screen may have been popped while waiting for the API.
+      if (isClosed) return;
+
       emit(SearchDetailsSuccess(book: book));
     } catch (e) {
+      // Same situation can happen if the request fails
+      // after the screen has already been popped.
+      if (isClosed) return;
+
       emit(SearchDetailsError(e.toString()));
     }
   }

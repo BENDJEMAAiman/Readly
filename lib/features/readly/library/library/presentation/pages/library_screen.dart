@@ -28,6 +28,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
   void initState() {
     super.initState();
 
+
+    debugPrint('******** LIBRARY SCREEN INIT ********');
+
     _titleController = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -37,17 +40,32 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   void dispose() {
+    debugPrint('******** LIBRARY SCREEN DISPOSE ********');
     _titleController.dispose();
     super.dispose();
   }
 
   Future<void> _addBook() async {
     try {
+      debugPrint('========== ADD BOOK START ==========');
+
       final LibraryBook? book = await context.push<LibraryBook>(Routes.search);
 
+      debugPrint('Returned from SearchScreen');
+      debugPrint('Book returned: ${book?.title}');
+      debugPrint('Book ID: ${book?.id}');
+      debugPrint('Book status: ${book?.readingStatus}');
+
       if (book != null && mounted) {
+        debugPrint('Calling LibraryCubit.addBook()');
+
         await context.read<LibraryCubit>().addBook(book);
+
+        debugPrint('LibraryCubit.addBook() FINISHED');
+      } else {
+        debugPrint('NO BOOK RETURNED');
       }
+      debugPrint('========== ADD BOOK END ==========');
     } catch (e) {
       debugPrint('Error while adding book: $e');
     }
