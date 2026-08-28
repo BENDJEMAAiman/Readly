@@ -42,14 +42,13 @@ set reading goals, and capture notes along the way.
   <img src="screenshots/home.jpeg" width="220"/>
   <img src="screenshots/library.jpeg" width="220"/>
   <img src="screenshots/reading_session.jpeg" width="220"/>
-  <img src="screenshots/profile.jpeg" width="220"/>
+  
 </p>
 
 <p align="center">
   <img src="screenshots/search.jpeg" width="220"/>
   <img src="screenshots/view_book.jpeg" width="220"/>
-  <img src="screenshots/notes.jpeg" width="220"/>
-  <img src="screenshots/add_book.jpeg" width="220"/>
+  <img src="screenshots/profile.jpeg" width="220"/>
 
 </p>
 
