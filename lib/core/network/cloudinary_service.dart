@@ -37,12 +37,14 @@ class CloudinaryService {
     required String userId,
   }) async {
     try {
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+
       final response = await cloudinary.unsignedUpload(
         file: file.path,
         uploadPreset: 'readly_book_covers',
         resourceType: CloudinaryResourceType.image,
         folder: 'readly/profile-pictures/$userId',
-        fileName: 'profile',
+        fileName: 'profile_$timestamp',
       );
 
       if (!response.isSuccessful || response.secureUrl == null) {

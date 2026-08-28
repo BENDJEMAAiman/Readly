@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readly/core/network/cloudinary_service.dart';
 import 'package:readly/features/auth/data/auth_repository.dart';
@@ -51,6 +52,8 @@ class ProfileCubit extends Cubit<ProfileState> {
         file: imageFile,
         userId: userId,
       );
+
+      debugPrint('NEW CLOUDINARY URL: $photoUrl');
 
       await authRepository.updateProfilePhoto(photoUrl);
 
