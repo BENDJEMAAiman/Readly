@@ -77,3 +77,12 @@ lib/
     ├── notes/
     ├── profile/
     └── splash/
+
+
+Each feature is organized into:
+
+feature/
+├── data/
+├── model/
+├── business_logic/
+└── presentation/
