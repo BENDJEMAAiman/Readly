@@ -11,13 +11,23 @@ class SearchCubit extends Cubit<SearchState>{
   Future<void> searchBooks(String title) async{
 
     if(title.trim().isEmpty) {
+      if (isClosed) return;
+
+
       emit(SearchInitial());
       return;
     }
 
+    if (isClosed) return;
+
     emit(SearchLoading());
     try {
       final searchResults = await searchRepository.searchBooks(title);
+
+      if (isClosed) return;
+
+
+
       if (searchResults.isEmpty) {
         emit(SearchEmpty());
       }
@@ -25,6 +35,7 @@ class SearchCubit extends Cubit<SearchState>{
         emit(SearchSuccess(searchResults));
       }
     } catch (e) {
+      if (isClosed) return;
       emit(SearchError(e.toString()));
     }
 

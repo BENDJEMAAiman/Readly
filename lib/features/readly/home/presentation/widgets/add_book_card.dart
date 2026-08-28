@@ -11,13 +11,13 @@ class AddBookCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push(Routes.search);
+        context.push(Routes.library);
       },
       child: Column(
         children: [
           Container(
             width: 130.w,
-            height: 150.h,
+            height: 155.h,
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(12.r),

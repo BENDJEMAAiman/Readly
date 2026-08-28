@@ -15,7 +15,7 @@ class ReadlyBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 72.h,
+      height: 80.h,
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
