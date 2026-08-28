@@ -46,8 +46,8 @@ set reading goals, and capture notes along the way.
 </p>
 
 <p align="center">
-  <!-- <img src="screenshots/search.png" width="220"/>
-  <img src="screenshots/book_details.png" width="220"/> -->
+  <img src="screenshots/search.jpeg" width="220"/>
+  <img src="screenshots/view_book.jpeg" width="220"/>
   <img src="screenshots/notes.jpeg" width="220"/>
 </p>
 
@@ -87,13 +87,13 @@ feature/
 └── presentation/
 
 
-# 🔄 State Management
+🔄 State Management
 
-Readly uses **Cubit** from `flutter_bloc` for state management.
+Readly uses Cubit from flutter_bloc for state management.
 
 The application follows a layered architecture where each layer has a clear responsibility:
 
-```text
+
 UI
  ↓
 Cubit
@@ -253,7 +253,7 @@ This structure keeps each user's books and their related **reading sessions and 
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/readly.git
+git clone https://github.com/BENDJEMAAiman/readly.git
 cd readly
 ```
 
