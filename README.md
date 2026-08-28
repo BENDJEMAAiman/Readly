@@ -49,7 +49,6 @@ set reading goals, and capture notes along the way.
   <img src="screenshots/search.jpeg" width="220"/>
   <img src="screenshots/view_book.jpeg" width="220"/>
   <img src="screenshots/notes.jpeg" width="220"/>
-  <img src="screenshots/notes.jpeg" width="220"/>
   <img src="screenshots/add_book.jpeg" width="220"/>
 
 </p>
