@@ -7,7 +7,7 @@ personal library, track reading progress, record reading sessions,
 set reading goals, and capture notes along the way.
 
 <p align="center">
-  <img src="assets/readly-preview.png" width="850"/>
+  <img src="screenshots/readly-preview.png" width="850"/>
 </p>
 
 <p align="center">
@@ -77,7 +77,6 @@ lib/
     ├── notes/
     ├── profile/
     └── splash/
-
 
 Each feature is organized into:
 
