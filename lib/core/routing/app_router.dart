@@ -40,7 +40,10 @@ final GoRouter appRouter = GoRouter(
   routes: [
     ShellRoute(
       builder: (context, state, child) {
-        return ReadlyShellScreen(child: child, location: state.uri.path);
+        return BlocProvider(
+          create: (_) => LibraryCubit(libraryRepository)..fetchUserBooks(),
+          child: ReadlyShellScreen(child: child, location: state.uri.path),
+        );
       },
       routes: [
         GoRoute(
@@ -72,10 +75,7 @@ final GoRouter appRouter = GoRouter(
 
         ShellRoute(
           builder: (context, state, child) {
-            return BlocProvider(
-              create: (_) => LibraryCubit(libraryRepository)..fetchUserBooks(),
-              child: child,
-            );
+            return child;
           },
           routes: [
             GoRoute(

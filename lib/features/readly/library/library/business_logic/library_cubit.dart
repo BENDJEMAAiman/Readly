@@ -9,13 +9,40 @@ class LibraryCubit extends Cubit<LibraryState> {
 
   LibraryCubit(this.repository) : super(const LibraryInitial());
 
+  LibraryBook? _pendingBookToAdd;
+
+  LibraryBook? get pendingBookToAdd => _pendingBookToAdd;
+
+  void setPendingBook(LibraryBook? book) {
+    _pendingBookToAdd = book;
+  }
+
+  void clearPendingBook() {
+    _pendingBookToAdd = null;
+  }
+
   /// Fetches all books belonging to the currently
   /// authenticated user.
   Future<void> fetchUserBooks() async {
+    final fetchId = DateTime.now().microsecondsSinceEpoch;
+
+    debugPrint('========== FETCH START ==========');
+    debugPrint('FETCH ID: $fetchId');
+    debugPrint('STATE BEFORE FETCH: $state');
+
     emit(const LibraryLoading());
 
     try {
+      debugPrint('FETCH $fetchId -> calling repository.getBooks()');
+
       final books = await repository.getBooks();
+
+      debugPrint('FETCH $fetchId -> returned ${books.length} books');
+      debugPrint(
+        'FETCH $fetchId -> titles: ${books.map((book) => book.title).toList()}',
+      );
+
+      debugPrint('FETCH $fetchId -> CURRENT CUBIT STATE: $state');
 
       emit(
         LibraryLoaded(
@@ -25,7 +52,16 @@ class LibraryCubit extends Cubit<LibraryState> {
           selectedStatus: null,
         ),
       );
-    } catch (e) {
+
+      debugPrint('FETCH $fetchId -> LibraryLoaded EMITTED');
+      debugPrint('================================');
+    } catch (e, stackTrace) {
+      debugPrint('========== FETCH ERROR ==========');
+      debugPrint('FETCH ID: $fetchId');
+      debugPrint('ERROR: $e');
+      debugPrint('STACK: $stackTrace');
+      debugPrint('=================================');
+
       emit(LibraryError(e.toString()));
     }
   }
@@ -86,8 +122,12 @@ class LibraryCubit extends Cubit<LibraryState> {
 
       debugPrint('LibraryLoaded emitted');
       debugPrint('========================================');
-    } catch (e) {
-      debugPrint('ADD BOOK ERROR: $e');
+    } catch (e, stackTrace) {
+      debugPrint('========== LIBRARY CUBIT ERROR ==========');
+      debugPrint('Error: $e');
+      debugPrint('StackTrace: $stackTrace');
+      debugPrint('==========================================');
+
       emit(LibraryError(e.toString()));
     }
   }

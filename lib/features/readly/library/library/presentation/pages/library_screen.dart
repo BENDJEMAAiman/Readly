@@ -28,7 +28,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
   void initState() {
     super.initState();
 
-
     debugPrint('******** LIBRARY SCREEN INIT ********');
 
     _titleController = TextEditingController();
@@ -59,9 +58,16 @@ class _LibraryScreenState extends State<LibraryScreen> {
       if (book != null && mounted) {
         debugPrint('Calling LibraryCubit.addBook()');
 
-        await context.read<LibraryCubit>().addBook(book);
+        final libraryCubit = context.read<LibraryCubit>();
+
+        await libraryCubit.addBook(book);
+
+        // The book has now been saved through the Search -> Back flow.
+        // We Clear it so Bottom Navigation does not save it again.
+        libraryCubit.clearPendingBook();
 
         debugPrint('LibraryCubit.addBook() FINISHED');
+        debugPrint('Pending book cleared');
       } else {
         debugPrint('NO BOOK RETURNED');
       }

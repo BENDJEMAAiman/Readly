@@ -27,10 +27,13 @@ class AuthWebService {
     required String password,
   }) async {
     try {
+      
       return await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      
     } on FirebaseAuthException {
       rethrow;
     }

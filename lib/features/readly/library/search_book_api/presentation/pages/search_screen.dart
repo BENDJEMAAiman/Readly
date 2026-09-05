@@ -22,7 +22,22 @@ final titleController = TextEditingController();
 final _formKey = GlobalKey<FormState>();
 
 class _SearchScreenState extends State<SearchScreen> {
-  LibraryBook? _bookToAdd;
+  bool _isReturning = false;
+
+  void _returnToLibrary() {
+    if (_isReturning) return;
+
+    _isReturning = true;
+
+    final book = context.read<LibraryCubit>().pendingBookToAdd;
+
+    debugPrint('========== SEARCH RETURN ==========');
+    debugPrint('Book: ${book?.title}');
+    debugPrint('Book ID: ${book?.id}');
+    debugPrint('===================================');
+
+    context.pop(book);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
 
-        debugPrint('========== SEARCH SCREEN POP ==========');
-        debugPrint('Book being returned: ${_bookToAdd?.title}');
-        debugPrint('Book ID: ${_bookToAdd?.id}');
-        debugPrint('=======================================');
-
-        context.pop(_bookToAdd);
+        _returnToLibrary();
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -46,15 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SearchHeader(
-                  onBack: () {
-                    debugPrint('========== SEARCH BACK ==========');
-                    debugPrint('_bookToAdd: ${_bookToAdd?.title}');
-                    debugPrint('_bookToAdd ID: ${_bookToAdd?.id}');
-                    debugPrint('=================================');
-                    context.pop(_bookToAdd);
-                  },
-                ),
+                SearchHeader(onBack: _returnToLibrary),
                 SizedBox(height: 32.h),
                 SearchTextField(controller: titleController, formKey: _formKey),
                 SizedBox(height: 24.h),
@@ -87,11 +89,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       debugPrint('Selected book: ${book.title}');
                       debugPrint('Selected book ID: ${book.id}');
 
-                      _bookToAdd = book;
+                      context.read<LibraryCubit>().setPendingBook(book);
 
-                      debugPrint(
-                        'Book stored in _bookToAdd: ${_bookToAdd?.title}',
-                      );
+                      debugPrint('Book stored in _bookToAdd: ${book.title}');
                       debugPrint('====================================');
                     },
                   ),
